@@ -34,7 +34,7 @@
    "size": 67957,
    "sha256": "b31a14cd82f74b079d9f8e2a7a5986f36ea729e7274b039d17df5a53c4384a7e",
    "hash": "b31a14cd82f74b079d9f8e2a7a5986f36ea729e7274b039d17df5a53c4384a7e",
-   "md5": "00fb519414f69337eb25e73da2e2e9c6"
+   "md5": "b283f39474ebdc04515ab58cbf860f13"
   },
   {
    "name": "daycycle.js",
@@ -77,7 +77,7 @@
    "size": 3602,
    "sha256": "a6c08a03f5e264bc89847f7ba1fe286b3f325d58140aa0bbca1ebbdee1556627",
    "hash": "a6c08a03f5e264bc89847f7ba1fe286b3f325d58140aa0bbca1ebbdee1556627",
-   "md5": "d08f513d201195a0354428aa827314e5"
+   "md5": "a94a694f2ddc1a5d09bd868ae1c8d9b8"
   },
   {
    "name": "github_reports.js",
@@ -112,16 +112,16 @@
   },
   {
    "name": "index.html",
-   "size": 961390,
-   "sha256": "80fe37f96fc94d9178d8da1236f945d15e92ca580fe48ef0c573eae59ecd7209",
-   "hash": "80fe37f96fc94d9178d8da1236f945d15e92ca580fe48ef0c573eae59ecd7209"
+   "size": 961687,
+   "sha256": "dc38ab91d156fb97399053c27283583030d3acbf8d3cf073117ddb8e35de5c51",
+   "hash": "dc38ab91d156fb97399053c27283583030d3acbf8d3cf073117ddb8e35de5c51"
   },
   {
    "name": "infracrew_system.js",
    "size": 40158,
    "sha256": "8c10361682983d68e2b0bf71133ae91b6db19cd90fea6bf01b5fac743355a511",
    "hash": "8c10361682983d68e2b0bf71133ae91b6db19cd90fea6bf01b5fac743355a511",
-   "md5": "c51f937b485f9664e21206168930136c"
+   "md5": "70fc117796afd2ca861ecd504101a767"
   },
   {
    "name": "inspector_crew.js",
@@ -163,7 +163,7 @@
    "size": 36419,
    "sha256": "f9947ad6b9fb563bb141b5ec05f08e9464b038694f8137307a952badf333cf5a",
    "hash": "f9947ad6b9fb563bb141b5ec05f08e9464b038694f8137307a952badf333cf5a",
-   "md5": "ffaf377120eee165b605225e4649621b"
+   "md5": "631f61b2da27b720c1125865f1c970eb"
   },
   {
    "name": "mlk_fairburn.js",
@@ -176,6 +176,12 @@
    "size": 94958,
    "sha256": "da9c4fd1ac4abf81d0f1380338b60e97ea52eb1c89f021247aa9395c3eca4225",
    "hash": "da9c4fd1ac4abf81d0f1380338b60e97ea52eb1c89f021247aa9395c3eca4225"
+  },
+  {
+   "name": "player.gif",
+   "size": 240372,
+   "sha256": "2f83c46b379d4354bdc857bf90d98c51780b0999b57b46020d96daa8ab197ddf",
+   "hash": "2f83c46b379d4354bdc857bf90d98c51780b0999b57b46020d96daa8ab197ddf"
   },
   {
    "name": "poi_map.js",
@@ -212,7 +218,7 @@
    "size": 60028,
    "sha256": "1e5870a036e353b73b839ba8c598ff686e9cd5c7d879f5e1a24a7f7ac49de044",
    "hash": "1e5870a036e353b73b839ba8c598ff686e9cd5c7d879f5e1a24a7f7ac49de044",
-   "md5": "55e06b2a8ddafd32eab5ba19967aabfe"
+   "md5": "d01d621faafecefce0cbd31b7fff9bbf"
   },
   {
    "name": "roadfix.js",
@@ -297,7 +303,7 @@
    "size": 61134,
    "sha256": "7fbd49fb8a8ac5dd6f03517069fdd3993a1630478274333998c3f17b1411bca3",
    "hash": "7fbd49fb8a8ac5dd6f03517069fdd3993a1630478274333998c3f17b1411bca3",
-   "md5": "c66f040994fa70662edc11de95a18f90"
+   "md5": "5a8c39942a7fb99cc20c30d18af7d82c"
   },
   {
    "name": "terrain_heights_adamsville_600x800.bin",
@@ -327,7 +333,7 @@
    "size": 65521,
    "sha256": "7ff6dbc69d70178a4ad2750efb1c0202c3bb640457e9bb431b7aef6646003b36",
    "hash": "7ff6dbc69d70178a4ad2750efb1c0202c3bb640457e9bb431b7aef6646003b36",
-   "md5": "56a48d72d36ccb85097368b614b8e9c3"
+   "md5": "636746d205ea4b5cbca623f6f8ec5b8b"
   },
   {
    "name": "vehicle_avoid.js",
@@ -465,6 +471,6 @@
    "url": "https://kingmarkarnold-code.github.io/adamsville-play/detailed/collision_material.js"
   }
  ],
- "ui_version": "2026.10.17.1",
- "version": "2026.10.17.1"
+ "ui_version": "2026.10.17.2",
+ "version": "2026.10.17.2"
 }
