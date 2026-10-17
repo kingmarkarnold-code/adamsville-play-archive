@@ -3,7 +3,7 @@
     "name": "Suburban House",
     "type": "House",
     "wall_material": "Vinyl Siding",
-    "wall_color": "#d4c5a0",
+    "wall_color": "#9141ac",
     "roof_color": "#5a3a2a",
     "roof_texture": "Shingle",
     "floors": 1,
@@ -14,9 +14,6 @@
       2000
     ],
     "rotation": 0.0,
-    "front_face": "front",
-    "width": 40.0,
-    "depth": 40.0,
     "windows": [
       {
         "face": "front",
@@ -68,6 +65,8 @@
     },
     "floor_types": [],
     "decorations": [],
+    "front_face": "right",
+    "depth": 10.0,
     "parking": []
   },
   {
@@ -75,7 +74,7 @@
     "type": "Store",
     "wall_material": "Brick",
     "wall_color": "#a0522d",
-    "roof_color": "#3a3a3a",
+    "roof_color": "#813d9c",
     "roof_texture": "Flat",
     "floors": 2,
     "walkable": true,
@@ -85,9 +84,6 @@
       1500
     ],
     "rotation": 0.0,
-    "front_face": "front",
-    "width": 40.0,
-    "depth": 40.0,
     "windows": [
       {
         "face": "front",
@@ -139,7 +135,8 @@
     },
     "floor_types": [],
     "decorations": [],
-    "parking": []
+    "parking": [],
+    "width": 55.0
   },
   {
     "name": "Corner Restaurant",
