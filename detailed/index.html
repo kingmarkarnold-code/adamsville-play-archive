@@ -8326,10 +8326,14 @@ var player = {
   inside: false, swimming: false, mesh: null
 };
 var swimT=0;
-/* v1.4: player.png embedded as base64 data URL — the file:// <img> load HUNG
-   forever on the TCL (no onLoad, no onError), leaving three.js r128's black
-   unloaded-texture rectangle. Data URLs decode from memory: no file request,
-   no CORS gate, cannot hang. Injected at build time. */
+/* v1.4: the player portrait embedded as base64 data URL — the file:// <img>
+   load HUNG forever on the TCL (no onLoad, no onError), leaving three.js
+   r128's black unloaded-texture rectangle. Data URLs decode from memory:
+   no file request, no CORS gate, cannot hang. Injected at build time.
+   v1.69 ONE-SOURCE PICTURE (Joshua, 2026-10-17): the master portrait file
+   is player.gif in this tree — converted from the old PNG that only ever
+   lived in www + the APK bundle (the PNG master is kept in backups). The
+   face below uses a webp crop data URL of that same portrait. */
 /* v1.7 3D HERO — Joshua at 15. Replaces the 2D billboard with a real
    low-poly stylized 3D humanoid (~1.88u tall, feet at y=0, front faces +Z
    so the existing damped player.yaw turning just works). player.mesh is a
