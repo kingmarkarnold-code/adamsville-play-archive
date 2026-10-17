@@ -1,56 +1,56 @@
 {
- "version": "1.7.2",
- "changelog": "Loads fast, edits by dragging, and the gas stations join in. (1) NO MORE LONG WAIT OR FREEZE: the editor opens with just a light list of building names (about 2 MB) and downloads a zone's full records only when you pick a building in it, with a progress bar showing the megabytes. Memory drops from about 550 MB to under 200 MB with the biggest zone open. (2) DRAG TO EDIT in the 3D view: drag the roof to move a building, its left/right edges for width, front/back edges for depth, and the orange front wall up or down for height \u2014 the number boxes and the dragging now change each other live. Field labels are spelled out (East\u2013West position, Width, Depth, Height). The camera now opens at eye level, straight at the front wall. (3) Click the Name, Type or Flagged column headers to sort the building list; switching category while looking at flagged buildings works again. (4) The Flagged list pane drags vertically, so the details below it can be pulled into view. (5) GAS STATION REVIEW tab: the problem stations are listed for your decision; flip 'Make editable' on one to open it in the 3D view, move/size it, and mark it Walkable \u2014 edits save to the editor's own station-edits file (the game itself does not change yet). A toggle shows all 109 stations. (6) A word at the bottom left of the 3D view says how the game treats what you're looking at: red Flagged, yellow Skipped, green Placed. (7) Click a street in the 3D view to select it, then 'Open in Map Editor' sends that spot to the Map Editor (its side of the jump arrives with Map Editor 1.9.5). (8) All editors now share one download cache, so a map one app downloads is reused by the others. Lists (buildings, flagged, gas stations) now come from GitHub every open \u2014 nothing is baked into the app, so they can be changed any time.",
- "files": [
-  {
-   "path": "about.py",
-   "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/about.py",
-   "sha256": "0b172aa3a3e94c80136473f95f42cef62f26927cfb9a8644f9aa14a4b3463140"
-  },
-  {
-   "path": "app.py",
-   "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/app.py",
-   "sha256": "f0fae7789e8eaaed28c607bbd5841a774ab4f18bf20c8effddf27d3d3bcebddb"
-  },
-  {
-   "path": "buildingcanvas.py",
-   "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/buildingcanvas.py",
-   "sha256": "63ff24720818a7ff990651d539641cb893a132775af56ac6fcfacf666d0a4add"
-  },
-  {
-   "path": "data.py",
-   "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/data.py",
-   "sha256": "308da8deeca061fd7318c6d1d1ed3938f12a951cbbfffd3d6714ab61c03704f4"
-  },
-  {
-   "path": "github_sync.py",
-   "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/github_sync.py",
-   "sha256": "09abb8f7c6ad2fc004fb83a22b04f44346b99fbd52b9e28c929c93ba5bc1bcba"
-  },
-  {
-   "path": "mollie-icon.png",
-   "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/mollie-icon.png",
-   "sha256": "28990027fd79e03e2ef8416e8c1d3410ee284ec86383280968b245f08576e768"
-  },
-  {
-   "path": "shared_cache.py",
-   "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/shared_cache.py",
-   "sha256": "86e16770fdea09e684c882870f730a794e2d64a807c3f06195dcd3254dedbde5"
-  },
-  {
-   "path": "subdivisioncanvas.py",
-   "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/subdivisioncanvas.py",
-   "sha256": "d76123adcee302159e2316fdeedadb3b3dfee5c0ea6482a0000b4067017a5340"
-  },
-  {
-   "path": "updater.py",
-   "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/updater.py",
-   "sha256": "0c36b000830e5661165ac9f636466cd6d8402bab410bcab7da10b3e1e13e3a92"
-  },
-  {
-   "path": "zonedata.py",
-   "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/zonedata.py",
-   "sha256": "2234d61d5899d14682f9aa4e84641998e6312695a571b929248cb88ce7b55ec1"
-  }
- ]
+  "version": "1.7.3",
+  "changelog": "Loads fast, edits by dragging, and the gas stations join in. (1) NO MORE LONG WAIT OR FREEZE: the editor opens with just a light list of building names (about 2 MB) and downloads a zone's full records only when you pick a building in it, with a progress bar showing the megabytes. Memory drops from about 550 MB to under 200 MB with the biggest zone open. (2) DRAG TO EDIT in the 3D view: drag the roof to move a building, its left/right edges for width, front/back edges for depth, and the orange front wall up or down for height \u2014 the number boxes and the dragging now change each other live. Field labels are spelled out (East\u2013West position, Width, Depth, Height). The camera now opens at eye level, straight at the front wall. (3) Click the Name, Type or Flagged column headers to sort the building list; switching category while looking at flagged buildings works again. (4) The Flagged list pane drags vertically, so the details below it can be pulled into view. (5) GAS STATION REVIEW tab: the problem stations are listed for your decision; flip 'Make editable' on one to open it in the 3D view, move/size it, and mark it Walkable \u2014 edits save to the editor's own station-edits file (the game itself does not change yet). A toggle shows all 109 stations. (6) A word at the bottom left of the 3D view says how the game treats what you're looking at: red Flagged, yellow Skipped, green Placed. (7) Click a street in the 3D view to select it, then 'Open in Map Editor' sends that spot to the Map Editor (its side of the jump arrives with Map Editor 1.9.5). (8) All editors now share one download cache, so a map one app downloads is reused by the others. Lists (buildings, flagged, gas stations) now come from GitHub every open \u2014 nothing is baked into the app, so they can be changed any time.",
+  "files": [
+    {
+      "path": "about.py",
+      "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/about.py",
+      "sha256": "0b172aa3a3e94c80136473f95f42cef62f26927cfb9a8644f9aa14a4b3463140"
+    },
+    {
+      "path": "app.py",
+      "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/app.py",
+      "sha256": "f0fae7789e8eaaed28c607bbd5841a774ab4f18bf20c8effddf27d3d3bcebddb"
+    },
+    {
+      "path": "buildingcanvas.py",
+      "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/buildingcanvas.py",
+      "sha256": "63ff24720818a7ff990651d539641cb893a132775af56ac6fcfacf666d0a4add"
+    },
+    {
+      "path": "data.py",
+      "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/data.py",
+      "sha256": "308da8deeca061fd7318c6d1d1ed3938f12a951cbbfffd3d6714ab61c03704f4"
+    },
+    {
+      "path": "github_sync.py",
+      "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/github_sync.py",
+      "sha256": "09abb8f7c6ad2fc004fb83a22b04f44346b99fbd52b9e28c929c93ba5bc1bcba"
+    },
+    {
+      "path": "mollie-icon.png",
+      "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/mollie-icon.png",
+      "sha256": "28990027fd79e03e2ef8416e8c1d3410ee284ec86383280968b245f08576e768"
+    },
+    {
+      "path": "shared_cache.py",
+      "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/shared_cache.py",
+      "sha256": "86e16770fdea09e684c882870f730a794e2d64a807c3f06195dcd3254dedbde5"
+    },
+    {
+      "path": "subdivisioncanvas.py",
+      "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/subdivisioncanvas.py",
+      "sha256": "d76123adcee302159e2316fdeedadb3b3dfee5c0ea6482a0000b4067017a5340"
+    },
+    {
+      "path": "updater.py",
+      "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/updater.py",
+      "sha256": "0c36b000830e5661165ac9f636466cd6d8402bab410bcab7da10b3e1e13e3a92"
+    },
+    {
+      "path": "zonedata.py",
+      "url": "https://raw.githubusercontent.com/kingmarkarnold-code/adamsville-play/main/editors/building-editor/zonedata.py",
+      "sha256": "2234d61d5899d14682f9aa4e84641998e6312695a571b929248cb88ce7b55ec1"
+    }
+  ]
 }
