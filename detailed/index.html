@@ -1687,7 +1687,7 @@ function __injectZoneFiles(files, callback){
    a phone ~30s). The deferred loader fetches it before any game script
    evaluates; buildTerrain() uses it when present, else synchronous compute.
    The ?v= cache-buster MUST match ui_version — the generator stamps it. */
-var TERR_PRE_URL='terrain_heights_adamsville_600x800.bin?v=2026.10.16.195';
+var TERR_PRE_URL='terrain_heights_adamsville_600x800.bin?v=2026.10.16.197';
 var TERR_PRE_LEN=(600+1)*(800+1);
 /* v1.35 #35: prefer the LIVE ui_version for the terrain binary cache-buster
    at fetch time. The generator stamps TERR_PRE_URL above (keep that line's
@@ -2372,7 +2372,7 @@ try{
 "use strict";
 /* v1.4: single source of truth for the HUD version — bump ONCE per release.
    The tags below are stamped from here so they can never go stale again. */
-var APP_VERSION='1.15.0';
+var APP_VERSION='1.18.0';  /* 2026-10-17 MERGE: aligned to the shipped APK version (play copy said 1.15.0, www copy said 1.12.3) */
 try{
   document.getElementById('hud-sub').textContent='demo v'+APP_VERSION;
   document.getElementById('ver-tag').textContent='v'+APP_VERSION;
@@ -12485,6 +12485,9 @@ document.addEventListener('touchend', function(e){ __tryStartGame(); });
 <script data-dsrc="vehicle_avoid.js" data-dkey=""></script>
 <script data-dsrc="sim_core.js" data-dkey=""></script>
 <script data-dsrc="gamepad_input.js" data-dkey=""></script>
+<!-- 2026-10-17 MERGE: keyboard remap + input diagnostics (Joshua 2026-10-16), ported from the www build so every deployment shares them -->
+<script data-dsrc="keyboard_remap.js" data-dkey=""></script>
+<script data-dsrc="input_diag.js" data-dkey=""></script>
 <script data-dsrc="traffic_system.js" data-dkey="traffic"></script>
 <script data-dsrc="gps_system.js" data-dkey=""></script>
 <!-- v1.54 #37 ENGINE SOUNDS (Michael Torres, Audio - Joshua approved fix, expanded: all drivable vehicles + buses/trains/trucks/crews) -->
