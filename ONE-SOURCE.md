@@ -119,15 +119,19 @@ copies credential files in either direction, so the generator leaves
 both copies alone. (Token renewal itself is Joshua's, deferred at
 his word on Oct 16.)
 
-### 3.5 `player.png` — referenced everywhere, filed nowhere
+### 3.5 `player.png` — RESOLVED 2026-10-17 (Joshua's one-source picture ruling)
 
-Both index.html copies reference `player.png`, and the APK bundle
-has the file (689 KB) — but **the canonical tree does not**. If www
-were generated with no exceptions, the player would lose its image
-in the APK. The generator preserves www's copy. The one-source fix
-is to add `player.png` to the repo's `detailed/` — a five-minute
-job, held for Joshua's go only because it changes what the repo
-serves to the web build too.
+**RESOLVED 2026-10-17:** the portrait now lives in the canonical tree
+as **`player.gif`** — converted from the PNG by Joshua's ruling ("create
+the one-source picture, but change it to a gif, cause we will be
+changing this image later"). The PNG master is preserved untouched in
+`game-map/backups/2026-10-17-merge/player.png.master-original`. The
+GIF is 1024×2048, 240,372 bytes (PNG was 689,006); its alpha is the
+PNG's silhouette thresholded at 50% (GIF transparency is all-or-
+nothing). The one textual reference (a stale comment in index.html)
+now names player.gif, `ui-manifest.json` carries player.gif
+(ui_version 2026.10.17.2), and the generator no longer preserves a
+www-only player file — www generates player.gif like everything else.
 
 ### 3.6 `setup.html` — not an exception, a deployment file
 
