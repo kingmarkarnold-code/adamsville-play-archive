@@ -84,7 +84,7 @@ STATION_EDITS_REPO_PATH = "editors/building-editor/station-edits.json"
 
 # Stamps into the version string of any zone file this editor saves
 # ("<date>-building-editor-<ver>-<zone>").
-EDITOR_VERSION = "1.7.2"
+EDITOR_VERSION = "1.7.3"
 
 # Download retry policy (1.7.x): network-class errors (connection
 # reset, timeout, DNS ...) get up to this many attempts per file,
@@ -222,18 +222,120 @@ def _iter_road_segments(roads):
                        pts[i + 1][0], pts[i + 1][1], hw)
 
 
+def _segment_index(roads):
+    """Flat segment table for nearest-road queries: one tuple
+    (name, ax, az, bx, bz, minx, minz, maxx, maxz) per road
+    segment, materialised ONCE per query set.
+
+    1.7.3 — the Elizabeth Baptist Church freeze (Joshua's live
+    report, 2026-10-17): building_front used to re-walk every
+    road record and run the exact distance test on every one of
+    the zone's segments for EVERY footprint edge — 43 edges x
+    78,750 adamsville segments = 3.4M pure-Python distance
+    tests, ~4.2 s on the build VM for that one church and a
+    dead, "not responding" window for tens of seconds on
+    Joshua's laptop, on every selection and every refresh. The
+    table is built once per building shown; _nearest_in_index
+    then exact-tests only the handful of segments whose
+    bounding box reaches the search window."""
+    out = []
+    if not roads:
+        return out
+    for cat, records in roads.items():
+        for rec in records or []:
+            pts = rec.get("pts") or []
+            name = rec.get("name") or ""
+            for i in range(len(pts) - 1):
+                ax, az = pts[i][0], pts[i][1]
+                bx, bz = pts[i + 1][0], pts[i + 1][1]
+                out.append((name, ax, az, bx, bz,
+                            min(ax, bx), min(az, bz),
+                            max(ax, bx), max(az, bz)))
+    return out
+
+
+def _nearest_in_index(index, x, z):
+    """(distance, name) of the nearest segment CENTRELINE to
+    (x, z) over a _segment_index table; (inf, "") when the table
+    is empty. EXACTLY the old full scan's result, found faster:
+    a segment can only be nearest if its bounding box reaches
+    a square window around the point, so each pass exact-tests
+    just those segments; the window starts at 60 u (the same
+    margin the inspector's backdrop uses) and doubles until
+    the best distance found fits inside it — at that point
+    every untested segment is provably farther away (any point
+    outside the square is more than the half-side from the
+    centre). Candidates are tested in table order with the
+    same strict < as the old scan, so ties resolve the same
+    way they always did."""
+    if not index:
+        return float("inf"), ""
+    radius = 60.0
+    while True:
+        x0, x1 = x - radius, x + radius
+        z0, z1 = z - radius, z + radius
+        best = float("inf")
+        best_name = ""
+        for name, ax, az, bx, bz, mnx, mnz, mxx, mxz in index:
+            if mxx < x0 or mnx > x1 or mxz < z0 or mnz > z1:
+                continue
+            d = _point_segment_distance(x, z, ax, az, bx, bz)
+            if d < best:
+                best = d
+                best_name = name
+        if best <= radius:
+            return best, best_name
+        radius *= 2.0  # nothing close enough yet — widen
+
+
 def _nearest_road_distance(roads, x, z):
     """(distance, name) of the nearest road segment's CENTRELINE to
     (x, z) over a parsed roads dict; (inf, "") when there are no
-    roads. Backs building_front's derivation."""
-    best = float("inf")
-    best_name = ""
-    for name, ax, az, bx, bz, _hw in _iter_road_segments(roads):
-        d = _point_segment_distance(x, z, ax, az, bx, bz)
-        if d < best:
-            best = d
-            best_name = name
-    return best, best_name
+    roads. Backs building_front's derivation. (1.7.3: routed
+    through the segment index — same result, see _segment_index
+    for the freeze this fixes.)"""
+    return _nearest_in_index(_segment_index(roads), x, z)
+
+
+def _edges_nearest(index, ring, edges):
+    """[(distance, name)] — the nearest segment centreline to
+    each edge's midpoint, over a _segment_index table.
+
+    1.7.3: building_front's per-edge helper. Testing every edge
+    against the whole table would still re-scan 78,750 bounding
+    boxes per edge, so the candidate set is cut ONCE for the
+    whole ring: only segments whose bounding box reaches the
+    ring's bounding box grown by R can win any edge. R starts
+    at 60 u and doubles until every edge's best distance over
+    the candidates fits inside R — the same square argument
+    as _nearest_in_index, applied ring-wide: a segment outside
+    the grown box is more than R from every point of the ring,
+    so once every best is <= R no outside segment can beat
+    any edge's winner. Winners are then picked per edge with
+    _nearest_in_index over the candidates (table order, strict
+    < — ties resolve exactly as the old full scan)."""
+    xs = [p[0] for p in ring]
+    zs = [p[1] for p in ring]
+    rx0, rx1 = min(xs), max(xs)
+    rz0, rz1 = min(zs), max(zs)
+    radius = 60.0
+    while True:
+        gx0, gx1 = rx0 - radius, rx1 + radius
+        gz0, gz1 = rz0 - radius, rz1 + radius
+        cand = [s for s in index
+                if not (s[7] < gx0 or s[5] > gx1
+                        or s[8] < gz0 or s[6] > gz1)]
+        out = []
+        fits = True
+        for a, b in edges:
+            d, name = _nearest_in_index(
+                cand, (a[0] + b[0]) / 2.0, (a[1] + b[1]) / 2.0)
+            out.append((d, name))
+            if d > radius:
+                fits = False
+        if fits:
+            return out
+        radius *= 2.0  # some edge's road is farther out — widen
 
 
 def nearby_road_segments(zd, ring, margin=60.0):
@@ -283,12 +385,15 @@ def building_front(zd, index, flagged_entry=None, roads=None):
         return out
     flagged_road = (flagged_entry or {}).get("nearestRoad") or None
     out["flagged_road"] = flagged_road
+    # 1.7.3: one segment index + one ring-wide candidate cut
+    # serves every edge of this ring (the per-edge full re-scan
+    # was the church freeze — see _segment_index/_edges_nearest).
+    seg_index = _segment_index(roads)
+    edge_nearest = _edges_nearest(seg_index, ring, edges)
     best_i, best_d, best_name = None, float("inf"), None
     flagged_best = None  # (distance, edge index) fronting flagged rd
     for i, (a, b) in enumerate(edges):
-        mx = (a[0] + b[0]) / 2.0
-        mz = (a[1] + b[1]) / 2.0
-        d, name = _nearest_road_distance(roads, mx, mz)
+        d, name = edge_nearest[i]
         if d < best_d:
             best_i, best_d, best_name = i, d, name
         if flagged_road and name == flagged_road:
