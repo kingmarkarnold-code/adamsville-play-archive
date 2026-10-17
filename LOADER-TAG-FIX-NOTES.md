@@ -80,8 +80,11 @@ loaded, once each; no duplicate entries anywhere.
 - Smoke test (`play/tools/smoke-test.js`): **PASS** — "76
   deferred script tags parsed", "all 76 data-dsrc tags parsed
   cleanly", structure balanced (80 elements).
-- `node --check`: **238/238** JS files in `play/detailed/` pass;
-  4/4 inline script blocks pass.
+- `node --check`: **119/119** JS files in `play/detailed/` pass;
+  4/4 inline script blocks pass. (Correction, same day: an early
+  draft of these notes said 238 — that was the merge task's
+  two-tree count, play + www. This fix's own sweep of the
+  canonical tree covered 119 files, 0 failures.)
 - Manifest: `ui-manifest.json` regenerated surgically — only the
   `index.html` fingerprint (size 961687 → 961696, sha256
   `dc38ab91…` → `7d5d1ca2…`) and the version strings changed.
