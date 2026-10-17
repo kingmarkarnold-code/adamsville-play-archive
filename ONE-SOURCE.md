@@ -80,37 +80,35 @@ Generation **preserves** these untouched. None of them was silently
 overwritten in either direction, because each one holds something the
 other side does not have. They stay on this list until Joshua rules.
 
-### 3.1 `index.html` — two parallel builds of the same game page ⚠️ the big one
+### 3.1 `index.html` — two parallel builds of the same game page ✅ RESOLVED 2026-10-17
 
-The two copies grew into **two different implementations of the same
-features** (529 lines only in the canonical copy, 258 only in www,
-across 108 spots):
+**RESOLVED 2026-10-17** (Joshua's merge method: both old copies renamed
+into `backups/2026-10-17-merge/`, the needed code composed into one new
+file): the merged page is canonical's build (material road-snap, the
+v1.60–v1.66 fixes, the rescaled 535 area) plus www's keyboard-remap /
+input-diagnostics loader tags and www's newer terrain cache stamp;
+`APP_VERSION` aligned to **1.18.0** (the shipped APK version — the two
+copies said 1.15.0 and 1.12.3). Full feature-diff table:
+`INDEX-MERGE-NOTES.md`.
 
-- The **canonical** copy has the road material-snap code
-  (`roadMatY` — roads sit on the grass material, added 2026-10-12)
-  which **www does not have at all**, and reports `APP_VERSION 1.15.0`.
-- The **www** copy has its own zone-picker/advanced-properties build,
-  small style differences in the unlock panels, a newer terrain
-  cache stamp (.197 vs .195 — the terrain data file itself is
-  identical), and the two loader tags for the modules below.
-- Neither copy is simply "the newer one". A real merge — taking the
-  best of both, once — is a task of its own, and it needs Joshua's
-  go because it changes game code.
+The two copies had grown into **two different implementations of the
+same features** (529 lines only in the canonical copy, 258 only in
+www, across 108 spots): canonical held the road material-snap code
+(`roadMatY`, 2026-10-12) www lacked entirely; www held its own
+zone-picker/advanced-properties build and the two module loaders.
 
-### 3.2 `input_diag.js` + `keyboard_remap.js` — www-only modules
+### 3.2 `input_diag.js` + `keyboard_remap.js` — www-only modules ✅ RESOLVED 2026-10-17
 
-Input diagnostics and the keyboard-remap backup controls (both
-Joshua's, 2026-10-16) were built **into the dev copy only**. www's
-`index.html` loads them and www's `ui-manifest.json` lists them; the
-canonical tree has neither the files nor the listings. They travel
-with exception 3.1 — when index.html is merged, these either move
-into the canonical tree (one source) or are retired, by Joshua's word.
+**RESOLVED 2026-10-17**: both modules were copied byte-for-byte into
+the canonical tree, are loaded by the merged page, and are inventoried
+in the canonical `ui-manifest.json`. One source, like everything else.
 
-### 3.3 `ui-manifest.json` — preserved with index.html
+### 3.3 `ui-manifest.json` — preserved with index.html ✅ RESOLVED 2026-10-17
 
-It lists www's index.html fingerprint and the two www-only modules,
-so it must stay consistent with www's real file set. Once 3.1/3.2 are
-resolved, this file goes back to being generated like all the others.
+**RESOLVED 2026-10-17**: the canonical manifest was regenerated for
+the merged page (77 entries, self-consistency verified) with
+`ui_version` bumped to **2026.10.17.1**; the file is generated into
+www like all the others again.
 
 ### 3.4 `github-config.js` — the credential file
 
@@ -264,3 +262,7 @@ same way for map data, and the UI Editor edits the game's own
   v1.18.0; www: 77 UI entries, 80 map entries, 0 mismatches).
   No APK was built in this task, and no game content changed:
   ui_version stays 2026.10.16.203, map_version 2026.10.16.10.
+- **2026-10-17 (later): the index.html merge** (exceptions 3.1–3.3
+  above) — one canonical game page, ui_version 2026.10.17.1, pushed
+  and read back byte-identical; the generator's exception list is
+  down to `github-config.js` alone. See `INDEX-MERGE-NOTES.md`.
