@@ -270,3 +270,35 @@ same way for map data, and the UI Editor edits the game's own
   above) — one canonical game page, ui_version 2026.10.17.1, pushed
   and read back byte-identical; the generator's exception list is
   down to `github-config.js` alone. See `INDEX-MERGE-NOTES.md`.
+- **2026-10-17 (later): the release tool's old www sync RETIRED —
+  ✅ RESOLVED** (the caution raised in the one-source completion
+  audit): `tools/release.py` Step 6 no longer hand-copies changed
+  files into `project/www/detailed/` — a layout that no longer
+  exists — and no longer overwrites www's `index.html` without its
+  `ui-manifest.json`. Per Joshua's ruling ("Retire the old sync —
+  use the generator"), Step 6 now runs `pipeline/generate-www.js`
+  plus its `--check`, and a failed check aborts the release before
+  the push, exactly as in `build-apk.sh`. The Pages root page
+  (`play/index.html`) still mirrors a changed `index.html` directly;
+  it is not generator output. Pre-change tool backed up untouched at
+  `backups/2026-10-17-release-sync/release.py.before`; functional
+  test evidence in `RELEASE-SYNC-RETIREMENT-NOTES.md`.
+- **2026-10-17 (later): the swallowed loader tag FIXED.** The
+  retirement work had found the release tool unable to publish: its
+  step-3 smoke gate counted 76 `data-dsrc` loader tags in the game
+  page but only 75 parsed. Cause: the `truck_restrictions.js` tag
+  was never closed, so the parser swallowed the `airport.js` tag
+  into its body and the airport module never loaded. Parser counts
+  on both pre-merge backups prove the defect **pre-existed the
+  merge** (from-play 74 text / 73 parsed; from-www 76 / 75) — the
+  merge carried it over faithfully. Fix: one `</script>` added;
+  loader set, order and files unchanged; page now parses 76/76 and
+  the step-3 gate passes. ui_version 2026.10.17.3; the stale Pages
+  root mirror (`play/index.html`, previously a 63-tag older page)
+  was refreshed by direct copy of the fixed canonical page and
+  pushed. Also reconciled: the tool's "80 map files changed"
+  classification is a phantom — `release.py`'s config assumes the
+  map manifest truncates hashes to 16 chars, but the manifest
+  carries full 64-char hashes, so every entry mismatches on length
+  alone; verified directly, all 80 map entries match disk exactly
+  (size + full sha256). Detail in `LOADER-TAG-FIX-NOTES.md`.
