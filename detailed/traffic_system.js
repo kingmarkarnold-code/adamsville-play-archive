@@ -70,10 +70,28 @@ if (window.__trafficV19) return;          // never double-load
 window.__trafficV19 = true;
 
 /* ---------------- config ---------------- */
-var MAX_RENDERED   = 40;      // rendered vehicle cap (raised v1.13: local traffic)
-var STREAM_DIST    = 350;     // geometry only within this many units (raised v1.13)
+/* Joshua's HALF-MILE FULL-DRAW RULE (2026-10-17): inside 800u of the player
+   (800 units = half a mile — the world is true-scale, 1 unit = 1 metre,
+   a mile = 1,609u) traffic is drawn IN FULL: every car holds a render
+   slot, at every perf level, automatically. The canonical constant is
+   FULL_DRAW_R in perf_budget.js (window.FULL_DRAW_R); fullDrawR() below
+   reads it lazily because this module loads first — the 800 fallback is
+   the same number, used only if perf_budget failed to load. Retuning the
+   circle is one number in perf_budget.js. */
+function fullDrawR(){ return (typeof window!=='undefined'&&window.FULL_DRAW_R)||800; }
+var MAX_RENDERED   = 108;     // render-slot pool = the WHOLE fleet (44 highway + 28 arterial
+                              // + 24 local + 12 near-start cars). The full-draw guarantee is
+                              // only honourable if a slot always exists for an inside-circle
+                              // car; measured densest real case is 39 cars within 800u
+                              // (Downtown spawn — FULL-DRAW-CIRCLE-NOTES.md), and a
+                              // fleet-sized pool makes the guarantee unconditional.
+                              // If the fleet constants below ever grow, grow this too.
+var STREAM_DIST    = 1000;    // geometry streams in within this many units — 200u beyond the
+                              // full-draw circle, so a car is already drawn before it crosses
+                              // into the guaranteed zone (no pop at the 800u boundary), and a
+                              // slotted car keeps its slot out to here (the release radius —
+                              // this replaces the old RELEASE_DIST=420; release IS stream-out).
 var STREAM_DIST2   = STREAM_DIST*STREAM_DIST;
-var RELEASE_DIST   = 420;     // hysteresis is handled by 0.3s reassign cadence
 var MIN_ROAD_LEN   = 120;     // roads shorter than this get no traffic
 var STUCK_AFTER_S  = 5;       // "speed ~0 while trying" seconds before logging
 var STUCK_COOLDOWN = 25;      // seconds before the same car can log again
@@ -118,12 +136,16 @@ function tsLocal(){
 }
 
 /* ---------------- road index ----------------
-   Wraps the roadDrawData entries traffic may use (highway + arterial) with
-   arc-length tables so cars advance in world units along the path. */
-function buildRoadIndex(){
+   Wraps the road entries traffic may use (highway + arterial + local)
+   with arc-length tables so cars advance in world units along the path.
+   src defaults to the loaded zone's roadDrawData; the cross-zone
+   extension (below) passes neighbouring zones' flattened records
+   through the exact same filter so both sets obey identical rules. */
+function buildRoadIndex(src){
   var idx=[];
-  for (var i=0;i<roadDrawData.length;i++){
-    var r=roadDrawData[i];
+  var list=src||roadDrawData;
+  for (var i=0;i<list.length;i++){
+    var r=list[i];
     if (!r||!r.pts||r.pts.length<2||!r.ys||r.ys.length!==r.pts.length) continue;
     // v1.13: include local roads so residential areas have traffic
     /* v2.1: new category set — interstate/highway/major/minor/local all carry traffic */
@@ -933,9 +955,10 @@ function stepCar(c,dt,px,pz){
 
 /* ---------------- streaming renderer ----------------
    3 draw calls for ALL traffic: bodies + glasshouses + wheels as
-   InstancedMesh. Slots are reassigned every 0.3s to the nearest cars.
-   PERFORMANCE: geometry exists only for cars near the player; distant cars
-   are pure data (positions only). Wheel spin is faked from distance driven
+   InstancedMesh. Slots are reassigned every 0.3s under Joshua's half-mile
+   full-draw rule (see assignSlots): every car within 800u is rendered,
+   cars stream in by 1000u, distant cars are pure data (positions only).
+   Wheel spin is faked from distance driven
    (wheelA += speed*dt / wheelRadius). */
 function buildRenderPool(){
   var bodyG=new THREE.BoxGeometry(2.0,0.62,4.6); bodyG.translate(0,0.55,0);
@@ -957,28 +980,48 @@ function buildRenderPool(){
   TR.glassIM.instanceMatrix.needsUpdate=true;
   TR.wheelIM.instanceMatrix.needsUpdate=true;
 }
-/* assignSlots(px,pz) — rebinds the MAX_RENDERED instanced slots to the
-   nearest cars within STREAM_DIST of the player (nearest-first sort).
-   Cars that lose a slot keep driving as data; emptied slots are zero-scaled
-   (hidden). Reassigns at most every 0.3s — the hysteresis-free cadence
-   keeps pop-in cheap while tracking a moving player. */
+/* assignSlots(px,pz) — rebinds the instanced slots every 0.3s under
+   Joshua's HALF-MILE FULL-DRAW RULE (2026-10-17):
+     1. GUARANTEE — every car within FULL_DRAW_R (800u) of the player
+        holds a slot, before any other car is considered, at every perf
+        level. The pool is fleet-sized (MAX_RENDERED=108) so this can
+        always be honoured; if the fleet ever outgrew the pool, the
+        nearest inside cars would win.
+     2. STICKINESS — a car that already holds a slot keeps it while it
+        stays within STREAM_DIST (1000u): beyond-circle slot claims go to
+        current holders first, so a car oscillating across the 800u line
+        (790 <-> 810u) never flickers. A holder is displaced only when the
+        budget is exhausted by inside-circle cars (rule 1 outranks it).
+     3. BUDGET — EXPERT #42's perf cap (window.__perfTrafficCap, null at
+        full quality) remains a cap on TOTAL rendered cars, but
+        inside-circle cars are EXEMPT: the beyond-circle allowance is
+        cap - insideCount (floored at 0), so quality scaling thins only
+        the field beyond 800u, never inside it.
+   Cars that lose a slot keep driving as data; emptied slots are
+   zero-scaled (hidden). */
 function assignSlots(px,pz){
-  var cand=[], i;
-  for (i=0;i<TR.cars.length;i++){ var c=TR.cars[i];
-    var dx=c.x-px, dz=c.z-pz, d2=dx*dx+dz*dz;
-    if (d2<STREAM_DIST2) cand.push([d2,i]);
+  var fdr=fullDrawR(), fdr2=fdr*fdr;
+  var inside=[], sticky=[], fresh=[], i, c, dx, dz, d2;
+  for (i=0;i<TR.cars.length;i++){ c=TR.cars[i];
+    dx=c.x-px; dz=c.z-pz; d2=dx*dx+dz*dz;
+    if (d2<=fdr2) inside.push([d2,i]);
+    else if (d2<STREAM_DIST2){
+      if (c.slot>=0) sticky.push([d2,i]); else fresh.push([d2,i]);
+    }
   }
-  cand.sort(function(a,b){return a[0]-b[0];});
-  /* EXPERT #42 (Dr. Elena Vasquez, Engine Programmer — Joshua approved "Fix
-     42"): perf budget can cap the rendered traffic slots on weak hardware.
-     window.__perfTrafficCap is null at full quality (stock 40). Cars that
-     lose a slot keep driving as data — same as the existing slot system. */
+  var byDist=function(a,b){return a[0]-b[0];};
+  inside.sort(byDist); sticky.sort(byDist); fresh.sort(byDist);
   var _cap=(typeof window!=='undefined'&&window.__perfTrafficCap)||MAX_RENDERED;
-  var n=Math.min(cand.length,_cap);
+  var outsideAllow=Math.max(0, Math.min(_cap,MAX_RENDERED)-inside.length);
+  var picked=[], k;
+  for (k=0;k<inside.length;k++) picked.push(inside[k][1]);
+  for (k=0;k<sticky.length&&outsideAllow>0;k++){ picked.push(sticky[k][1]); outsideAllow--; }
+  for (k=0;k<fresh.length&&outsideAllow>0;k++){ picked.push(fresh[k][1]); outsideAllow--; }
+  var n=Math.min(picked.length,MAX_RENDERED);
   for (var s=0;s<MAX_RENDERED;s++){
     var prev=TR.slots[s];
     if (prev>=0&&TR.cars[prev]) TR.cars[prev].slot=-1;
-    var ci=s<n?cand[s][1]:-1;
+    var ci=s<n?picked[s]:-1;
     TR.slots[s]=ci;
     if (ci>=0){ TR.cars[ci].slot=s; TR.bodyIM.setColorAt(s,_c.setHex(TR.cars[ci].color)); }
     else zeroSlot(s);
@@ -1010,6 +1053,92 @@ function renderSlots(dt){
   TR.bodyIM.instanceMatrix.needsUpdate=true;
   TR.glassIM.instanceMatrix.needsUpdate=true;
   TR.wheelIM.instanceMatrix.needsUpdate=true;
+}
+
+/* ---------------- station edits (Building Editor overrides) ----------------
+   Joshua's Building Editor (1.7.2+) lets him flip a problem gas station
+   to editable, drag/resize it in the editor's 3D view, and mark it
+   Walkable. Those edits live in ONE file in this repo —
+   editors/building-editor/station-edits.json — which the editor saves
+   by the standing rule (save locally -> push -> close -> re-download
+   the proof copy). The game NEVER edits that file; it only reads it.
+
+   Format (the editor's own — see StationEdits in the editor's
+   zonedata.py):
+     { "version": 1, "updatedBy": "...",
+       "stations": { "<stationIndex>": { "editable": true/false,
+                     "walkable": true/false,
+                     "dx": <units east of the real spot>,
+                     "dz": <units south of the real spot>,
+                     "w": <footprint width>, "d": <depth>,
+                     "h": <height> } } }
+   stationIndex is the station's index in REAL_FUEL_STATIONS (the
+   editor's station list is built in the same order — verified against
+   all 109 entries). Positions are OFFSETS from the station's real
+   spot — the editor's anchor rule is realPosition + (dx, dz) — never
+   absolute coordinates.
+
+   The download starts the moment this script loads (cache-busted,
+   cache:'no-store' — the same pattern map delivery and the watcher
+   use), so by the time the world is built and stations place, it has
+   settled. placeGasStations() waits for it; the promise ALWAYS
+   resolves, so placement can never be blocked by this file.
+
+   Failure behaviour (Joshua's failure philosophy — never silent):
+   - file missing (404): nobody has published a station edit yet —
+     a normal state; stations place by the standing rules, noted in
+     the console log.
+   - network error / bad JSON / wrong shape / timeout: stations place
+     by the standing rules AND the failure is reported (console +
+     Report), never swallowed. */
+var STATION_EDITS_URL='https://kingmarkarnold-code.github.io/adamsville-play/editors/building-editor/station-edits.json';
+var STATION_EDITS={ byIndex:{}, loaded:false, applied:0, walkable:0, error:'' };
+var stationEditsReady=(function(){
+  function settle(map, err){
+    STATION_EDITS.byIndex=map||{};
+    STATION_EDITS.loaded=!err;
+    STATION_EDITS.error=err||'';
+    if (err){
+      try{ console.error('[STATION-EDITS] '+err); }catch(e){}
+      try{ if (typeof Report!=='undefined') Report.noteError('gasStations','station-edits load failed',err); }catch(e){}
+    }
+    return STATION_EDITS;
+  }
+  if (typeof fetch!=='function')
+    return Promise.resolve(settle(null,'fetch unavailable in this environment — stations placed by the standing rules'));
+  var timedOut=false;
+  var timeoutP=new Promise(function(res){ setTimeout(function(){ timedOut=true; res(null); },25000); });
+  var fetchP=fetch(STATION_EDITS_URL+'?cb='+Date.now(), {cache:'no-store'}).then(function(r){
+    if (r.status===404) return null;   // no edits published yet — a normal state, handled below
+    if (!r.ok) throw new Error('HTTP '+r.status);
+    return r.json();
+  }).then(function(doc){
+    if (doc===null) return null;
+    if (!doc || typeof doc!=='object' || !doc.stations || typeof doc.stations!=='object')
+      throw new Error('station-edits.json has no "stations" object — the file is malformed');
+    return doc.stations;
+  });
+  return Promise.race([fetchP, timeoutP]).then(function(map){
+    if (map===null && timedOut)
+      return settle(null,'download timed out after 25s — stations placed by the standing rules');
+    if (map===null){
+      try{ console.log('[STATION-EDITS] no station-edits.json published yet — stations placed by the standing rules'); }catch(e){}
+      return settle({},'');
+    }
+    try{ console.log('[STATION-EDITS] loaded '+Object.keys(map).length+' station edit entr(ies) from the repo'); }catch(e){}
+    return settle(map,'');
+  }, function(err){
+    return settle(null, String(err&&err.message||err));
+  });
+})();
+/* stationEditFor(i) — Joshua's override for REAL_FUEL_STATIONS[i], or
+   null. An entry counts ONLY when its "editable" flag is true: the
+   editor keeps a station's saved values in the file when he flips it
+   back to review-only (editable:false), and those kept values must
+   NOT apply — review-only means the game treats it as unedited. */
+function stationEditFor(i){
+  var e=STATION_EDITS.byIndex[String(i)];
+  return (e && e.editable===true) ? e : null;
 }
 
 /* ---------------- gas stations (v1.12) ----------------
@@ -1091,38 +1220,53 @@ function gasFaceAngle(x,z){
   }catch(e){}
   return Math.atan2(bx-x,bz-z);
 }
-/* buildGasStation(sx,sz,brand,colorHex) — builds one station from the shared
+/* buildGasStation(sx,sz,brand,colorHex,ov) — builds one station from the shared
    instanced parts (pad, canopy, kiosk, roof, 6 columns, 4 pump islands),
    rotated so +z local faces the nearest road. Registers 4 pump parking spots
    (on the approach side, +4.6u local z) for NPC fueling and the player's
    refuel hook, adds per-object colliders (columns, pumps, kiosk only — the
-   LOT stays drivable), and pushes the business into BUSINESSES/LANDMARKS. */
-function buildGasStation(sx,sz,brand,colorHex){
+   LOT stays drivable), and pushes the business into BUSINESSES/LANDMARKS.
+   ov (optional) is Joshua's Building Editor override for this station
+   ({w,d,h,walkable} from station-edits.json). Without ov the station is
+   the standard 48x38x8.5 cluster, built exactly as it always was. With
+   ov the whole cluster scales PROPORTIONALLY from the standard size —
+   the same rule the editor's 3D view uses (its station_parts) — so the
+   station Joshua sized in the editor is the station that stands here.
+   WALKABLE (ov.walkable): the station registers NO colliders at all —
+   the player can walk through the whole cluster (under the canopy,
+   through the kiosk and pumps). Stations have no interior geometry in
+   this game, so non-solid IS the enterable treatment for a station;
+   the lot was already drivable either way. */
+function buildGasStation(sx,sz,brand,colorHex,ov){
   var S=gasShared(); gasInstancing();
   if (S.n>=GAS_MAX) return null;
+  var GW=(ov&&+ov.w)||48, GD=(ov&&+ov.d)||38, GH=(ov&&+ov.h)||8.5;
+  var fsx=GW/48, fsz=GD/38, fsy=GH/8.5;      // proportional scale factors (all 1 without ov)
+  var walkable=!!(ov&&ov.walkable);
+  var _sv=new THREE.Vector3(fsx,fsy,fsz);    // per-instance part scale
   var gy=heightAt(sx,sz);
   var a=gasFaceAngle(sx,sz);
   var ca=Math.cos(a), sa=Math.sin(a);
-  function L2W(lx,lz){ return {x:sx+lx*ca+lz*sa, z:sz-lx*sa+lz*ca}; }
+  function L2W(lx,lz){ return {x:sx+(lx*fsx)*ca+(lz*fsz)*sa, z:sz-(lx*fsx)*sa+(lz*fsz)*ca}; }
   var idx=S.n++;
   _e.set(0,a,0); _q.setFromEuler(_e);
   function setIM(im,i,lx,ly,lz){
-    _v.set(sx+lx*ca+lz*sa, gy+ly, sz-lx*sa+lz*ca);
-    _m.compose(_v,_q,_ONE); im.setMatrixAt(i,_m);
+    _v.set(sx+(lx*fsx)*ca+(lz*fsz)*sa, gy+ly*fsy, sz-(lx*fsx)*sa+(lz*fsz)*ca);
+    _m.compose(_v,_q,_sv); im.setMatrixAt(i,_m);
   }
   setIM(S.padIM,idx, 0,0.15,0);
   // canopy gets per-instance brand color
-  _v.set(sx,gy+7.2,sz); _m.compose(_v,_q,_ONE);
+  _v.set(sx,gy+7.2*fsy,sz); _m.compose(_v,_q,_sv);
   S.canopyIM.setMatrixAt(idx,_m);
   try{ S.canopyIM.setColorAt(idx,_c.setHex(colorHex)); }catch(e){}
   setIM(S.kioskIM,idx, 18,1.95,-14);
   setIM(S.roofIM,idx, 18,3.95,-14);
-  // 6 canopy columns
+  // 6 canopy columns (colliders skipped entirely when walkable)
   var ci=idx*6, cn=0;
   [[-15,-9],[0,-9],[15,-9],[-15,9],[0,9],[15,9]].forEach(function(p){
     setIM(S.colIM,ci+cn,p[0],3.6,p[1]);
     var w=L2W(p[0],p[1]);
-    try{ addBldgCollider(w.x,w.z,0.9); }catch(e){}
+    if (!walkable){ try{ addBldgCollider(w.x,w.z,Math.sqrt(Math.pow(0.45*fsx,2)+Math.pow(0.45*fsz,2)),undefined,{hw:0.45*fsx,hd:0.45*fsz,yaw:a}); }catch(e){} }  // 2026-10-18: the column's real 0.9x0.9 footprint (was circle r=0.9)
     cn++;
   });
   // 4 pump islands + pump spots (parking positions on approach side)
@@ -1130,7 +1274,7 @@ function buildGasStation(sx,sz,brand,colorHex){
   [-15.75,-5.25,5.25,15.75].forEach(function(px){
     setIM(S.pumpIM,pi,px,1.05,0);
     var w=L2W(px,0);
-    try{ addBldgCollider(w.x,w.z,1.4); }catch(e){}
+    if (!walkable){ try{ addBldgCollider(w.x,w.z,Math.sqrt(Math.pow(0.7*fsx,2)+Math.pow(0.45*fsz,2)),undefined,{hw:0.7*fsx,hd:0.45*fsz,yaw:a}); }catch(e){} }  // 2026-10-18: the pump's real 1.4x0.9 footprint (was circle r=1.4)
     var sp=L2W(px,4.6);
     pumpSpots.push({x:sp.x,z:sp.z,busy:0});
     GAS_PUMP_SPOTS.push({x:sp.x,z:sp.z});
@@ -1141,22 +1285,40 @@ function buildGasStation(sx,sz,brand,colorHex){
   });
   if (S.canopyIM.instanceColor) S.canopyIM.instanceColor.needsUpdate=true;
   // kiosk collider (the only big one — everything else is a small post/pump)
-  var kw=L2W(18,-14);
-  try{ addBldgCollider(kw.x,kw.z,6); }catch(e){}
+  if (!walkable){
+    var kw=L2W(18,-14);
+    try{ addBldgCollider(kw.x,kw.z,Math.sqrt(Math.pow(4.5*fsx,2)+Math.pow(3.5*fsz,2)),undefined,{hw:4.5*fsx,hd:3.5*fsz,yaw:a}); }catch(e){}  // 2026-10-18: the kiosk's real 9x7 footprint (was circle r=6 -- 2.5u past its short-side walls)
+  }
   try{ LANDMARKS.push({x:sx,z:sz,name:brand}); }catch(e){}
-  var biz={x:sx,z:sz,y:gy,w:48,d:38,h:8.5,type:'gas',name:brand,
+  var biz={x:sx,z:sz,y:gy,w:GW,d:GD,h:GH,type:'gas',name:brand,
            pumpSpots:pumpSpots,faceAngle:a};
+  if (ov){ biz.edited=true; biz.walkable=walkable; }
   try{ BUSINESSES.push(biz); }catch(e){}
   TR.gas.push(biz);
   return biz;
 }
-/* placeGasStations() — places all stations: prefers REAL_FUEL_STATIONS
+/* placeGasStations() — the gate: station placement runs once Joshua's
+   station-edits download has settled (see the loader above). The edits
+   promise ALWAYS resolves — edits loaded, no file yet, or a logged
+   failure all lead here — so stations can never be blocked by it, and
+   every other part of traffic init proceeds without waiting. */
+function placeGasStations(){
+  stationEditsReady.then(function(){
+    try{ placeGasStationsNow(); }
+    catch(e){ try{ Report.noteError('gasStations','placement failed',String(e&&e.message||e)); }catch(x){} }
+  });
+}
+/* placeGasStationsNow() — places all stations: prefers REAL_FUEL_STATIONS
    (real OSM coordinates converted with xz()) placed via placeStruct so they
    never collide with buildings/roads; falls back to procedural arterial
    placement if the data file is missing (should never happen — it's
    bundled). Then adds Joshua's hand-verified ground-truth station
-   (Fairburn Rd north of MLK, west side). Reports placed/skipped counts. */
-function placeGasStations(){
+   (Fairburn Rd north of MLK, west side). Reports placed/skipped counts.
+   Joshua's station edits (station-edits.json) layer ON TOP of the
+   standing rules: an edited station places at HIS position and size —
+   the skip rule is not consulted for it, because his edit IS the
+   ruling. Stations with no edit take the standing path, untouched. */
+function placeGasStationsNow(){
   var list=(typeof REAL_FUEL_STATIONS!=='undefined'&&REAL_FUEL_STATIONS.length)
     ? REAL_FUEL_STATIONS : null;
   var made=0, skipped=0;
@@ -1164,11 +1326,25 @@ function placeGasStations(){
     // REAL stations at verified OSM positions
     for (var i=0;i<list.length&&made<GAS_MAX;i++){
       var s=list[i], p=xz(s.lat,s.lon);
+      var edit=stationEditFor(i);
+      if (edit){
+        // Joshua's override: his position (real spot + his dx/dz
+        // offset), his size, his walkable flag — placed unconditionally.
+        var ebrand=uniqueGasName(GAS_BRANDS[made%GAS_BRANDS.length]);
+        var eb=buildGasStation(p.x+(+edit.dx||0), p.z+(+edit.dz||0), ebrand,
+          GAS_CANOPY[made%GAS_CANOPY.length],
+          { w:+edit.w||48, d:+edit.d||38, h:+edit.h||8.5, walkable:!!edit.walkable });
+        if (eb){ eb.stationIndex=i; made++; STATION_EDITS.applied++;
+                 if (eb.walkable) STATION_EDITS.walkable++; }
+        else skipped++;
+        continue;
+      }
       var spot=null;
       try{ spot=placeStruct(p.x,p.z,26,4,'gasStation-real'+i); }catch(e){}
       if (!spot){ skipped++; continue; }
       var brand=uniqueGasName(GAS_BRANDS[made%GAS_BRANDS.length]);
-      if (buildGasStation(spot.x,spot.z,brand,GAS_CANOPY[made%GAS_CANOPY.length])) made++;
+      var ub=buildGasStation(spot.x,spot.z,brand,GAS_CANOPY[made%GAS_CANOPY.length]);
+      if (ub){ ub.stationIndex=i; made++; }
       else skipped++;
     }
   } else {
@@ -1202,7 +1378,9 @@ function placeGasStations(){
   }catch(e){ try{ Report.noteError('gasStations','mlk-fairburn failed',String(e&&e.message||e)); }catch(x){} }
   try{ Report.setSys('gasStations',{placed:made,skipped:skipped,
     real:!!list,status:'ok',
-    note:'real OSM positions; drivable lots; per-object colliders'}); }catch(e){}
+    stationEdits:{loaded:STATION_EDITS.loaded, applied:STATION_EDITS.applied,
+      walkable:STATION_EDITS.walkable, error:STATION_EDITS.error||undefined},
+    note:'real OSM positions; drivable lots; per-object colliders; Building Editor station edits applied on top'}); }catch(e){}
 }
 window.GAS_PUMP_SPOTS=GAS_PUMP_SPOTS;
 /* nearestGasStation(x,z,maxD) — closest station within maxD units. Used by
@@ -1261,6 +1439,143 @@ function updateTraffic(dt,px,pz){
 window.updateTraffic=updateTraffic;
 
 /* ---------------- init + self-install ---------------- */
+/* ============================================================================
+   CROSS-ZONE TRAFFIC (2026-10-25 — Joshua's rule: "when it comes to anybody
+   but the player, the zone borders do not apply").
+   ----------------------------------------------------------------------------
+   Traffic's junction graph is built from the LOADED zone's roadDrawData
+   only, so a street that continues across a zone seam simply ended at the
+   border: cars hit a dead end and looped at an invisible fence, even
+   though the road carries on. The zone unlock wall never applied to them
+   (zoneunlock.js gates the player only) — the border they felt was the
+   missing data on the other side.
+
+   Fix, following the GPS system's proven pattern (gps_system.js v1.65):
+   a few seconds after boot, fetch each NEIGHBOURING zone's roads.json
+   (local map store first via MapDelivery, else a cache-busted fetch),
+   append its roads to TR.roads — APPEND-ONLY, so every existing road
+   keeps its index and every car's current road reference stays valid —
+   then rebuild the junction graph once over the combined set. The graph
+   builder's own endpoint/crossing rules stitch the two halves of a
+   seam-crossing street together, so cars now drive across zone borders
+   onto the continuing road and back, locked zone or not. Spawning is
+   unchanged (cars still spawn in the loaded zone only — that is
+   placement, not a border rule), and if a fetch fails (offline,
+   file://) the game keeps exactly the behaviour it had before.
+   ============================================================================ */
+var TR_ZONE_RECTS={
+  adamsville:{xMin:-832.1294014084006, xMax:8377.129401408598,  zMin:-4248.536971831284, zMax:8266.53697183079},
+  mableton:{xMin:-7480.585387323972,   xMax:-832.1294014084006, zMin:-4248.536971831284, zMax:8266.53697183079},
+  downtown:{xMin:8377.129401408598,    xMax:16314.485035211088, zMin:-4248.536971831284, zMax:2555.720070422735},
+  eastatlanta:{xMin:8377.129401408598, xMax:16314.485035211088, zMin:2555.720070422735,  zMax:8266.53697183079},
+  unioncity:{xMin:-7480.585387323972,  xMax:-832.1294014084006, zMin:8266.53697183079,   zMax:30877.519366197153},
+  southfulton:{xMin:-832.1294014084006,xMax:8377.129401408598,  zMin:8266.53697183079,   zMax:30877.519366197153},
+  riverdale:{xMin:8377.129401408598,   xMax:16314.485035211088, zMin:8266.53697183079,   zMax:30877.519366197153}
+};
+/* trafficNeighborZones(zid) — zones sharing a tile EDGE with zid (the
+   same edge-share test gps_system.js uses; corner touches don't count). */
+function trafficNeighborZones(zid){
+  var r=TR_ZONE_RECTS[zid]; if (!r) return [];
+  var out=[];
+  for (var k in TR_ZONE_RECTS){
+    if (k===zid) continue;
+    var o=TR_ZONE_RECTS[k];
+    var shareV=(Math.abs(o.xMax-r.xMin)<1 || Math.abs(o.xMin-r.xMax)<1) &&
+               Math.min(o.zMax, r.zMax)>Math.max(o.zMin, r.zMin);
+    var shareH=(Math.abs(o.zMax-r.zMin)<1 || Math.abs(o.zMin-r.zMax)<1) &&
+               Math.min(o.xMax, r.xMax)>Math.max(o.xMin, r.xMin);
+    if (shareV || shareH) out.push(k);
+  }
+  return out;
+}
+/* trafficFetchZoneRoads(zid) — the zone's roads.json as text: local map
+   store first (MapDelivery.serveText), else a cache-busted fetch.
+   Mirrors gps_system.js's fetchZoneRoadsText. */
+function trafficFetchZoneRoads(zid){
+  var path='zones/'+zid+'/roads.json';
+  function network(){
+    var v='';
+    try{ v=window.__MAPVER||''; }catch(e){}
+    var url=path+(v?('?v='+encodeURIComponent(v)):'');
+    return fetch(url, {cache:'no-store'}).then(function(r){
+      if (!r || !r.ok) throw new Error(path+' — HTTP '+(r&&r.status));
+      return r.text();
+    });
+  }
+  try{
+    if (typeof MapDelivery!=='undefined' && MapDelivery.serveText){
+      return MapDelivery.serveText(path).then(function(t){
+        return (t!==null && t!==undefined)? t : network();
+      }, function(){ return network(); });
+    }
+  }catch(e){}
+  return network();
+}
+/* trafficFlattenZoneRoads(data) — a zone roads.json ({class: [records]})
+   in the roadDrawData record shape buildRoadIndex consumes. Same
+   flattening gps_system.js uses, widths included. */
+function trafficFlattenZoneRoads(data){
+  var out=[];
+  var W={interstate:34, highway:22, major_artery:20, minor_artery:18.4, local:7.2};
+  try{ if (typeof ROAD_WIDTHS!=='undefined' && ROAD_WIDTHS) W=ROAD_WIDTHS; }catch(e){}
+  for (var k in data){
+    var arr=data[k]; if (!arr) continue;
+    for (var i=0;i<arr.length;i++){
+      var r=arr[i]; if (!r) continue;
+      out.push({pts:r.pts, ys:r.ys, name:r.name, cat:k, w:W[k]||10});
+    }
+  }
+  return out;
+}
+var _trafficXZoneStarted=false;
+function extendTrafficAcrossZones(){
+  if (_trafficXZoneStarted) return; _trafficXZoneStarted=true;
+  if (!TR || !TR.roads || !TR.jx) return;
+  var zid='adamsville';
+  try{ if (typeof ZONELOADER!=='undefined' && ZONELOADER.currentZone) zid=ZONELOADER.currentZone; }catch(e){}
+  var nbs=trafficNeighborZones(zid);
+  if (!nbs.length) return;
+  var added=0, doneZones=[];
+  // Fetch neighbours one at a time, then rebuild the graph ONCE.
+  var chain=Promise.resolve();
+  nbs.forEach(function(nz){
+    chain=chain.then(function(){
+      return trafficFetchZoneRoads(nz).then(function(text){
+        var data=null;
+        try{ data=JSON.parse(text); }catch(e){}
+        if (!data) return;
+        var entries=buildRoadIndex(trafficFlattenZoneRoads(data));
+        if (entries.length){
+          // APPEND-ONLY: existing indices (and every car's current
+          // road reference) stay exactly as they were.
+          TR.roads=TR.roads.concat(entries);
+          added+=entries.length; doneZones.push(nz);
+        }
+      }, function(){ /* this zone's fetch failed — traffic keeps
+                        today's behaviour on that border */ });
+    });
+  });
+  chain.then(function(){
+    if (!added) return;
+    try{
+      // One rebuild over the combined set: the builder's own endpoint
+      // and crossing rules stitch seam-crossing streets together.
+      TR.jx=buildJunctionGraph(TR.roads); TR.jxClock=0;
+      if (window.Report && Report.setSys){
+        var _jx={nodes:TR.jx.nodes.length, endJx:TR.jx.nEndJx,
+                 crossings:TR.jx.nCross, buildMs:TR.jx.buildMs};
+        Report.setSys('traffic',{status:'ok', version:'1.9',
+          cars:TR.cars.length, rendered:TR.rendered||0,
+          gasStations:TR.gas.length, stuckSpots:TR.stuckSpots,
+          roads:TR.roads.length, junctions:_jx,
+          note:'cross-zone graph live: +'+added+' roads from '+
+               doneZones.join(', ')+' — traffic crosses zone borders '+
+               'freely (player-only walls unchanged)'});
+      }
+    }catch(e){}
+  });
+}
+
 /* initTraffic() — builds the road index, junction graph, render pool, and
    spawns the car fleet: 44 highway cars (25-31 u/s ≈ 54-67 mph), 28 arterial
    (13-19 u/s ≈ 28-41 mph), 24 local (8-14 u/s ≈ 17-30 mph neighborhood
@@ -1319,6 +1634,14 @@ function initTraffic(){
       Sim.onTick('render', 10, function(dt){ if(!window.__launchOpts || window.__launchOpts.traffic!==false) updateTraffic(); });
     }
   }catch(e){}
+  /* v1.63 CRASH LOG (Joshua 2026-10-17): a clean init that spawned ZERO
+     cars is a named critical, not a quiet empty world. */
+  try{
+    if (window.SA_CRASH && TR.cars.length===0)
+      SA_CRASH('critical',{code:'traffic-none-spawned',
+        message:'traffic initialised but spawned 0 cars (roads indexed: '+TR.roads.length+')',
+        where:'traffic_system.js initTraffic()'});
+  }catch(e){}
   try{
     var _jx=TR.jx?{nodes:TR.jx.nodes.length,endJx:TR.jx.nEndJx,
       crossings:TR.jx.nCross,buildMs:TR.jx.buildMs}:null;
@@ -1329,6 +1652,12 @@ function initTraffic(){
       note:'highway+arterial traffic; junction protocol v1.47; stuck-spot road audit live'});
   }catch(e){}
   window.TRAFFIC=TR;   // expose only after a clean init
+  /* CROSS-ZONE TRAFFIC (2026-10-25): once boot settles, pull the
+     neighbouring zones' roads into the graph so traffic crosses zone
+     borders onto the continuing streets (see extendTrafficAcrossZones
+     above). Fully guarded — any failure leaves traffic exactly as it
+     was with the loaded zone alone. */
+  setTimeout(function(){ try{ extendTrafficAcrossZones(); }catch(e){} }, 3000);
 }
 
 /* Boot: wait until the main script has built the world (roadDrawData,
@@ -1351,12 +1680,22 @@ var bootTimer=setInterval(function(){
   if (ready){
     try{ initTraffic(); }catch(e){
       try{ if(typeof Report!=='undefined') Report.noteError('traffic','init failed',String(e&&e.message||e)); }catch(x){}
+      /* v1.63 CRASH LOG: same failure, second record — the one growing
+         markdown log (the Report panel entry above stays for in-game QA). */
+      try{ if(window.SA_CRASH) SA_CRASH('error',{code:'traffic-init-failed',
+        errorName:(e&&e.name)||'Error', message:String(e&&e.message||e),
+        where:'traffic_system.js initTraffic()'}); }catch(y){}
     }
     clearInterval(bootTimer);
-  } else if (bootTries>240){   // 60s — give up quietly, never break the game
+  } else if (bootTries>240){   // 120s — give up, never break the game (2026-10-18 SWITCH AUDIT: window harmonized to the crew standard; at 60s, slow device loads timed traffic out while the 120s crews survived)
     clearInterval(bootTimer);
     try{ if(typeof Report!=='undefined') Report.noteError('traffic','boot-timeout','deps never ready'); }catch(e){}
+    /* v1.63 CRASH LOG: this path used to "give up quietly" — silent
+       continuation is banned; the timeout is on the record. */
+    try{ if(window.SA_CRASH) SA_CRASH('error',{code:'traffic-boot-timeout',
+      message:'traffic dependencies never became ready within 120s; traffic did not start',
+      where:'traffic_system.js boot poll'}); }catch(x){}
   }
-},250);
+},500);
 
 })();

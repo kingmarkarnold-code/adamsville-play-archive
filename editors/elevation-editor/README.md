@@ -1,1 +1,0 @@
-<h1>Adamsville Elevation Editor</h1><p>Terrain sculpting tool. Open index.html to use.</p>

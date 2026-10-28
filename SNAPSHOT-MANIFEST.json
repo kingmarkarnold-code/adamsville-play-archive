@@ -1,0 +1,806 @@
+[
+ {
+  "path": "detailed/building_spawner.js",
+  "size": 31967,
+  "sha256": "592897764044c3e2a10495d7d1e3782b3ba8eb4f66e2f7cadbabacf4700d1e47",
+  "git_blob": "b03e75bcc357fb0814a03d5a01bd49727f9a5f57"
+ },
+ {
+  "path": "detailed/elev.js",
+  "size": 451620,
+  "sha256": "c73c3f11c5882ff0539bed5071dbb0c9ce72f7c610e7138dd4afe1a7972a2a04",
+  "git_blob": "a098f880714d04ea78b57c2e702ab8a8da9be136"
+ },
+ {
+  "path": "detailed/elev.json",
+  "size": 451395,
+  "sha256": "2670c3f0a37f7d5b6e38b3e3dc165ec5db8fa7cb683a350a3324c712b704cd49",
+  "git_blob": "7bfc36cadda852910e5cf7fb1667ef2176299c28"
+ },
+ {
+  "path": "detailed/exit_signs.js",
+  "size": 57174,
+  "sha256": "c8c79276bb01c6704e413b53225ff4808093fb23f404a7521ca31702185366a0",
+  "git_blob": "4be216b5970821b083046e7da8751246d7dd1bfa"
+ },
+ {
+  "path": "detailed/goto.js",
+  "size": 50176,
+  "sha256": "bac319fa0450ba3fe9b337b7b68118023e24db84b1b611ab9fc39951382a5bd1",
+  "git_blob": "1a5ca89612a6fe2aac3e8c6528e4d63992442559"
+ },
+ {
+  "path": "detailed/gps_system.js",
+  "size": 116383,
+  "sha256": "010eec2010f6634bb16d8cfdb16e9ad0ee589dfb3b176d310065f7e2f48aa828",
+  "git_blob": "02e69503144fb5665466f8ab0ae0e9cdafbf648f"
+ },
+ {
+  "path": "detailed/junction_pins.js",
+  "size": 1129923,
+  "sha256": "b1df27b20a55e9c5a5d17ad40951ee6942edfddbf05e49d20818c6e03fb3a5e2",
+  "git_blob": "b7a69188ddacf21eb8271fbaf95d17adaccf02cd"
+ },
+ {
+  "path": "detailed/map-manifest.json",
+  "size": 20186,
+  "sha256": "e6000bc060a4de824921cdc1064e4ea0a2b0e10f7a01ad7539b22bd3d7839f48",
+  "git_blob": "828cd748240957dc094634ef0fe2b2958c0d4b16"
+ },
+ {
+  "path": "detailed/mapdelivery.js",
+  "size": 36883,
+  "sha256": "8338a587d20a549988cf0450fc110c71dc4e290979fee2e19068aea3d29e278c",
+  "git_blob": "6054ac69477777a4b7433a4276e645d013fa9f62"
+ },
+ {
+  "path": "detailed/osm_buildings.js",
+  "size": 1134733,
+  "sha256": "de964944226eb1a90380e29abaff3bc7579a3259cfd8ab11f0ee2b73ccb35fa3",
+  "git_blob": "3a870c4e8d3ac96d678b20a667bf5e48a826af58"
+ },
+ {
+  "path": "detailed/overpasses.json",
+  "size": 264,
+  "sha256": "83f8a864ae55d7dd32daba675e32a759f448746bee793e9a8e23688cec1c7f5b",
+  "git_blob": "8fda30f39e4d86f14743b4447f38411fa501645a"
+ },
+ {
+  "path": "detailed/poi_map.js",
+  "size": 9075,
+  "sha256": "38df503c54d0b8167afe85646883ce3ca11dfb459e0222dd51dee370056cdd56",
+  "git_blob": "bf79689085413cbf2f606ca8d1784680a32c12af"
+ },
+ {
+  "path": "detailed/road_sync.js",
+  "size": 13255,
+  "sha256": "ce36818f1ca773c98218e0bd945cdae570874fbc60332493ea26eca71d82e5f4",
+  "git_blob": "1199b90aec0f4278aff394fb37a60e627be82587"
+ },
+ {
+  "path": "detailed/roads.js",
+  "size": 2869111,
+  "sha256": "eec352fcf7471fea290afb447c16478d4a2145d70ae69bfad767fcd8013a5169",
+  "git_blob": "612bdf2e4abc63f227ae2b712ece33f94befcf8b"
+ },
+ {
+  "path": "detailed/satellite_view.js",
+  "size": 14466,
+  "sha256": "0e5e4a52a49d564285348c4a027d51f3f754bfb3d4d69bc3dec8a5af65e6a6aa",
+  "git_blob": "1797886ae51f57f9f62510ba9e6a86212d114fda"
+ },
+ {
+  "path": "detailed/split-zones.py",
+  "size": 22592,
+  "sha256": "98ed1c85c37ec4b55fae0f4235fbd8a06b60f3b2c58177fa5d6b95e96480ca5c",
+  "git_blob": "11b160b925a87d55ab8da292a522502f66d8e92b"
+ },
+ {
+  "path": "detailed/terrain_heights_adamsville_600x800.bin",
+  "size": 1925604,
+  "sha256": "a78b6c9a562e9ae2e36796297169d52e94e472e3394dc1e028c5929d134ed103",
+  "git_blob": "96c138d9f08c5e24bd65d4261eb6f4edbe08cf9f"
+ },
+ {
+  "path": "detailed/terrain_lifts.js",
+  "size": 561214,
+  "sha256": "f19191e0c26d5710c960c59c475a077d97279c7b4d339f1590fb33b5f78a0cbb",
+  "git_blob": "b42b354cc0f2363f083ab0a8bfeb2f73d9215fba"
+ },
+ {
+  "path": "detailed/terrain_sync.js",
+  "size": 8403,
+  "sha256": "059bdd0d517e2b39fecc7c973a429298e4f4140aee967f8286f3cc4147f112cd",
+  "git_blob": "b67084906022d92862640d20cc905bb1c6a5d56d"
+ },
+ {
+  "path": "detailed/traffic_assist.js",
+  "size": 18226,
+  "sha256": "e8c3ff29b576edb31cf7a8ace6054ea800434e41a7b677e29add611ad2ffd52c",
+  "git_blob": "7fdb9c68a9f3a19edc5e906fb7f0fce6320910fc"
+ },
+ {
+  "path": "detailed/traffic_system.js",
+  "size": 84769,
+  "sha256": "b4f39dbbacb029acb53305aaaf7c0f34bebbd8f4b5eddd16b7e18c30df04f48c",
+  "git_blob": "4046cf88bc9b3a6b52fa9e2a40bdacd1f30c1730"
+ },
+ {
+  "path": "detailed/vehicle_avoid.js",
+  "size": 15488,
+  "sha256": "57a3efa459bd20d004da4231f40cea1248dd1b5e0175ada9c6ef125983053c2b",
+  "git_blob": "9564c139079847fdfbfa573a05b5c168cf15a036"
+ },
+ {
+  "path": "detailed/water_features.json",
+  "size": 3305,
+  "sha256": "c55ffe58200eb7ef0ab609761992f7fc383a734d6cca9c5a967077df94a0403f",
+  "git_blob": "0430bd2ecd924d90398ff7570b19356d5c5b376c"
+ },
+ {
+  "path": "detailed/water_interaction.js",
+  "size": 22369,
+  "sha256": "12b50636745520be6881da392b4a1b60415f23d065c80f215fcc6505757e84d9",
+  "git_blob": "9e09528554517dd1837cc384decb11d94ba75593"
+ },
+ {
+  "path": "detailed/water_render.js",
+  "size": 8470,
+  "sha256": "d7c81b558479113d5e0ab5651a46a681ae5d73f3bbb7ba7737a3cbbd876ca527",
+  "git_blob": "4cedab0663d72ccfcf52daa28c46d36376b40a47"
+ },
+ {
+  "path": "detailed/zoneloader.js",
+  "size": 17298,
+  "sha256": "9d50c63e172266dc2eab6916391f6a9a18a47f2d9b001739d002a529335aa4f5",
+  "git_blob": "c6ebd25c007f193996d0d30e43594fd6d190edf4"
+ },
+ {
+  "path": "detailed/zones/adamsville/buildings.js",
+  "size": 836650,
+  "sha256": "05d627de9285ddc783544da125c7475203a0dee7bffba5f2e95b42732d99ce86",
+  "git_blob": "61dae68f642ca2383707dc2393689bf317f1b5c6"
+ },
+ {
+  "path": "detailed/zones/adamsville/buildings.json",
+  "size": 836498,
+  "sha256": "eb15d619dcd69f1bcf75b7737deeda28dd4ea0f72a204e2bd0666c408d682925",
+  "git_blob": "a30ff47ac8d0ea1f260b281f9a05e92db6eff7ef"
+ },
+ {
+  "path": "detailed/zones/adamsville/buildings_detail.json",
+  "size": 5098778,
+  "sha256": "791f7b42f6326921fe6e6c8e604f2c0b3eefadd6660f435cd803ed3c05459237",
+  "git_blob": "a355a4f8c467b7683b5ce212c58539854aaa80de"
+ },
+ {
+  "path": "detailed/zones/adamsville/hero_buildings.json",
+  "size": 1399,
+  "sha256": "88354e44ee7223407ce7f15d6d7f9e887740936b142702918a8a73bb31064ef0",
+  "git_blob": "98e119328f80b7547b5965f1487f2dd5327e0954"
+ },
+ {
+  "path": "detailed/zones/adamsville/lifts.js",
+  "size": 194,
+  "sha256": "35c77bf49fc74086375ad9c085627d58430526f2768bae883c3f166b0040b70c",
+  "git_blob": "583c3cf074ff9bb1ac5511b878ec37ec621deca1"
+ },
+ {
+  "path": "detailed/zones/adamsville/lifts.json",
+  "size": 2,
+  "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "git_blob": "0637a088a01e8ddab3bf3fa98dbe804cbde1a0dc"
+ },
+ {
+  "path": "detailed/zones/adamsville/pins.js",
+  "size": 271396,
+  "sha256": "88a1ccd59ddcd43e2d89c4baf45679cd2bf91f398caf184ed915cd62e14df457",
+  "git_blob": "f9d2317109edd2b44e6ad9acfb2bde53529b5ce1"
+ },
+ {
+  "path": "detailed/zones/adamsville/pins.json",
+  "size": 271204,
+  "sha256": "472a0d5f17d630efbca4b743be823c247bc81f6d5ace148d722c29c1eabb4acc",
+  "git_blob": "943cd9a68d40d82a18dd1815586e1141a0f20e9a"
+ },
+ {
+  "path": "detailed/zones/adamsville/places.json",
+  "size": 14509,
+  "sha256": "f17a866093df7cad16ab4edd985016a1eafb677522f71913dad72316c37f38c5",
+  "git_blob": "364324510add413128d9ed585b34372c107b52bd"
+ },
+ {
+  "path": "detailed/zones/adamsville/roads.js",
+  "size": 3251575,
+  "sha256": "8cfc4dc102bedffb4e822f28ba3a810e4641443fc36f50d18ca0f19731f10cf2",
+  "git_blob": "ed3070a599d150b559cad254630ceb6f32d8e735"
+ },
+ {
+  "path": "detailed/zones/adamsville/roads.json",
+  "size": 3251389,
+  "sha256": "82084ff3470c96288cfda2986601efbab196083d2e83fe9fd1c8c78516926831",
+  "git_blob": "776eff9e9e57fa16d50dce3bf8750513269c8e24"
+ },
+ {
+  "path": "detailed/zones/adamsville/roads_detail.json",
+  "size": 470831,
+  "sha256": "f049d31d359b64685b733861e72ce5de3c258b2d2ee7841e84974320f67d4f00",
+  "git_blob": "c2075b5dffe12c9e4aee639ef1af9d820cef4d1f"
+ },
+ {
+  "path": "detailed/zones/adamsville/signs.js",
+  "size": 7524,
+  "sha256": "99e369423bd0c8ce6a959e58fb43258a0df401391add352904bde8d80ff32042",
+  "git_blob": "7eeef55f27da4f1ff1b432c1b16492f96c9f008a"
+ },
+ {
+  "path": "detailed/zones/adamsville/signs.json",
+  "size": 7131,
+  "sha256": "6ec907a40163a3de42196d5ad3b418d76ccd64372ad947e739eb51e0693acac3",
+  "git_blob": "c50b9c32817b06198f12bbdb4992429059b09a04"
+ },
+ {
+  "path": "detailed/zones/adamsville/water.json",
+  "size": 120521,
+  "sha256": "c9d3d2aa658731cd61258cc02b8f609d96f8ad61fa9bf2f87ceac882736b4ed4",
+  "git_blob": "88046f9d2380cbf4fc9f1d67702f5872db3e99b6"
+ },
+ {
+  "path": "detailed/zones/adamsville/zone.json",
+  "size": 1029,
+  "sha256": "73ba92d7f08cb18085f9bcef6114ee5b069027ffea209d394bfd2cd2fb4d4ede",
+  "git_blob": "62d73e38b99e959bcc10e7153e75cca5d52f30d2"
+ },
+ {
+  "path": "detailed/zones/downtown/buildings.js",
+  "size": 234258,
+  "sha256": "97f25eac3fa580298e3bf0d19b94a15403801b2b98a702a407645c77d739487a",
+  "git_blob": "02aeee360c4a791779027c20c305365ee685e831"
+ },
+ {
+  "path": "detailed/zones/downtown/buildings.json",
+  "size": 234064,
+  "sha256": "652ece7a432daae591fa19e776c402365bc6eac1cfa4fe22cd52b06a7f555905",
+  "git_blob": "5d51e041cd5b52232b64594d28c0f211f961ee21"
+ },
+ {
+  "path": "detailed/zones/downtown/buildings_detail.json",
+  "size": 1630056,
+  "sha256": "c35c9f4e64264b76342804ee5dbf1879d87c2dababa99d2126ee0db24b662a4c",
+  "git_blob": "fc09f66529fd8466b4b97ab353f194b352414940"
+ },
+ {
+  "path": "detailed/zones/downtown/lifts.js",
+  "size": 190,
+  "sha256": "db32b8a9fb71618943058a85cf8dd4a7b27356732ef6630f835a3787ef1b17a6",
+  "git_blob": "72d1064e290fb326e8b64e13be68b14e299efdae"
+ },
+ {
+  "path": "detailed/zones/downtown/lifts.json",
+  "size": 2,
+  "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "git_blob": "0637a088a01e8ddab3bf3fa98dbe804cbde1a0dc"
+ },
+ {
+  "path": "detailed/zones/downtown/pins.js",
+  "size": 151156,
+  "sha256": "d200dcb4e8e632b877bd9b5bdfcddd2af52209fd37b0f64e74a68ba7d14022d1",
+  "git_blob": "607d931f3a1baa119b8b8445ae9a420092bb7096"
+ },
+ {
+  "path": "detailed/zones/downtown/pins.json",
+  "size": 150968,
+  "sha256": "5c1028ac06c41644fa59f44844192096a7b13b0b51f5cb230b411134d6670fc9",
+  "git_blob": "84c7c70eca7a0f996f52f68e58122c44f9223847"
+ },
+ {
+  "path": "detailed/zones/downtown/places.json",
+  "size": 48299,
+  "sha256": "14ad0990813b6b789e20eff2a41c7cae61e8e4f811ea2dfc8673f50d4101d098",
+  "git_blob": "b6a44963371f2bd753ef3c3c5748f35ead4c38aa"
+ },
+ {
+  "path": "detailed/zones/downtown/roads.js",
+  "size": 1278699,
+  "sha256": "6ddd380639d37a7ff15aca5475a6c6a20c1661cdddbf53e4a59288be1a3db5b8",
+  "git_blob": "070f2e22cc24594a8d01be0cc037cb5062f8a7d6"
+ },
+ {
+  "path": "detailed/zones/downtown/roads.json",
+  "size": 1278523,
+  "sha256": "841b249f91b52f7275eac8a7a4abd7376565cf66f75940a1252536005621bcc2",
+  "git_blob": "015a52d65a292259039252e6df7ecd47727bc5b3"
+ },
+ {
+  "path": "detailed/zones/downtown/roads_detail.json",
+  "size": 272160,
+  "sha256": "dd96268ffb77b51599ddd9b4674baf9680b274f57e7dab76a82ca5e12ab28c1b",
+  "git_blob": "e1e766521a86d4a2b968a6d528c7304ed973032e"
+ },
+ {
+  "path": "detailed/zones/downtown/signs.js",
+  "size": 4512,
+  "sha256": "a387a911c6d5b51bd2d46447e227cb4eb2f5e0bbf7a3357aa305d9b679087517",
+  "git_blob": "42045a57a4ffd8ea4da2e63ee15d9a9157877da2"
+ },
+ {
+  "path": "detailed/zones/downtown/signs.json",
+  "size": 4298,
+  "sha256": "23fde3ce625753a3e915ccd7f707a4534f0eb2d4c26f54c76b77b3e3bc35b1b0",
+  "git_blob": "b1e12e00cd925ea1e0cae88710ad45696474e742"
+ },
+ {
+  "path": "detailed/zones/downtown/water.json",
+  "size": 24566,
+  "sha256": "3633abb5092249a3034e4f15c168d54d107291924f1e07eac60c5a3674fabeeb",
+  "git_blob": "67440ed49fc606889f3af7a9e4c28eb4c64bd0ff"
+ },
+ {
+  "path": "detailed/zones/downtown/zone.json",
+  "size": 1222,
+  "sha256": "7f2c98b3c7e181315c667d60469e5b84511ee0836642648b68e1730c9c74054c",
+  "git_blob": "c159eb67cf75b6c7d10d12bf6d3b7278406b1edf"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/buildings.js",
+  "size": 889042,
+  "sha256": "8daa9d5e93101c561bee2f56203d448ffbbecf7f833c870e036b0376441e5b43",
+  "git_blob": "18b92476beedfe12384e15af40548efe8bff4510"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/buildings.json",
+  "size": 888841,
+  "sha256": "f127562ca55354b4568f9165c3c8bc638ed369ea6e067c9071534ce9a58b241d",
+  "git_blob": "2940df2e974a0a015ad00f19edc5eb2df21d4a03"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/buildings_detail.json",
+  "size": 5830759,
+  "sha256": "5b00c4e22748e0b3ff725d1f9a08c689b9499289f6ee18b967e3d04f963980c8",
+  "git_blob": "9ef9c53cc3e590aa4f54740cc4f201f0d9c85d63"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/lifts.js",
+  "size": 197,
+  "sha256": "ecf436597fee6c4692d34f90d8fe1a3ad1515bf0db92b272a5ee8af94a6ac566",
+  "git_blob": "0afb7809b0df1891680696e630149f2442558d8e"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/lifts.json",
+  "size": 2,
+  "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "git_blob": "0637a088a01e8ddab3bf3fa98dbe804cbde1a0dc"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/pins.js",
+  "size": 347795,
+  "sha256": "568ad0831c059d48612725069c4ba36b77419ec84213529401b44ff5cfaae154",
+  "git_blob": "d5468ad01d5c657eea3476d5066a8bdc77467935"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/pins.json",
+  "size": 347600,
+  "sha256": "50ef488324f842ffab6fda8064c6c82a85e12a3d5dd054bce3556c3a573c3ca5",
+  "git_blob": "35ee90f3e578058269fb822dca6898ee7c0e77c5"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/places.json",
+  "size": 110067,
+  "sha256": "c1bdba3a753acecd05de90f4b22373ec7e684f1306b2ce5b4ffcdb970c9f3769",
+  "git_blob": "cea23c0701ae6ab1c7f99e977fd3f9455d871f74"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/roads.js",
+  "size": 2995053,
+  "sha256": "e47c741b19800c18261c6c9d634e92071798f634424e4cc0a0a50fe800014a01",
+  "git_blob": "f461ecf0f41222de12db27b8a2c3b323f690a858"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/roads.json",
+  "size": 2994870,
+  "sha256": "5bfe825e7b9636a307ed66f58677a63df2629752f3fa7d8da8920d27446684eb",
+  "git_blob": "9e7c8b0b2bfbe4029be8142dd7135c27b53ca4f5"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/roads_detail.json",
+  "size": 632310,
+  "sha256": "ce4a2f86b38bf9575b7fcd904a4498607cd13824f58e27a277899b69704ccd64",
+  "git_blob": "a3f79a4caca7b1145bba2ee3e2f0dcf89a0ecf25"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/signs.js",
+  "size": 11774,
+  "sha256": "bc952738e37c9edc73f499fd20925c43212ca7b8dd32f223beeffb2ae518bf15",
+  "git_blob": "5beb40df4c1b5db0792105ff69dbd48628f49420"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/signs.json",
+  "size": 11553,
+  "sha256": "993e248a0554b6e623ce99894072687b1a490a9b540631d43dde34fcdfe8edc3",
+  "git_blob": "5246b0e984cad734b90135f3dd9c5349a6d06cb0"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/water.json",
+  "size": 30438,
+  "sha256": "394d200b3ca464e8cfcc9c317fc64eefd010d07c44ec5279650db2f1c541cb1a",
+  "git_blob": "2e20e31db1a5275367fc6e7ec15771c11d7a2f28"
+ },
+ {
+  "path": "detailed/zones/eastatlanta/zone.json",
+  "size": 1223,
+  "sha256": "70fc908a0d21cb9f649e662c585957faca8db0c9351c2f69f519c1d4e70a7833",
+  "git_blob": "9b574e2f49972bad9de75b5b8c978dda83ca2e45"
+ },
+ {
+  "path": "detailed/zones/mableton/buildings.js",
+  "size": 126148,
+  "sha256": "1724301aadda48c60fc229c341836e611bbdfd2d00294c142d9648fb30ab5970",
+  "git_blob": "f9647a0be5cb33b774a1077c038f9d2b1a237823"
+ },
+ {
+  "path": "detailed/zones/mableton/buildings.json",
+  "size": 125954,
+  "sha256": "5451cbbc267a32b3665612c04df96e3222fb07a8903928e541b7a03741c0a74d",
+  "git_blob": "7e0bb0238d95426aeff349febbc2738f0d29ec42"
+ },
+ {
+  "path": "detailed/zones/mableton/buildings_detail.json",
+  "size": 680743,
+  "sha256": "25f8445c99c65565c238bf89db3835f5c51f5c9ebe40875e7fc692417c56b3bc",
+  "git_blob": "61fff47ae922be095a810ac85f577eecfb2e9dbc"
+ },
+ {
+  "path": "detailed/zones/mableton/lifts.js",
+  "size": 190,
+  "sha256": "36b01a8515a776323dd56ae124f78424414676542b1e15ba2fe75c709f291ea2",
+  "git_blob": "566c5d4101b6c9e6056d686db054f2830c11d9e1"
+ },
+ {
+  "path": "detailed/zones/mableton/lifts.json",
+  "size": 2,
+  "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "git_blob": "0637a088a01e8ddab3bf3fa98dbe804cbde1a0dc"
+ },
+ {
+  "path": "detailed/zones/mableton/pins.js",
+  "size": 76294,
+  "sha256": "cf9ea72137aaf767db26de6fc6fb21f1a6552198ff2d59f724a50dbb7a463907",
+  "git_blob": "74e8bcc9812b8d7f92f265da3bd28a993bb59e99"
+ },
+ {
+  "path": "detailed/zones/mableton/pins.json",
+  "size": 76106,
+  "sha256": "5c338362d6628d6b3ba4164fdfda28846fb76d00b77e66d82423de53bfd06be2",
+  "git_blob": "8c123da4de69044c656a52ef5468f6ef405bc8eb"
+ },
+ {
+  "path": "detailed/zones/mableton/places.json",
+  "size": 4510,
+  "sha256": "f166cbcf7e6190534e075b9da49c0b969dc9afc2922378e404099323cb96b4f1",
+  "git_blob": "ed28bc6b02958fc2912fd4d3b581e18aeeee9858"
+ },
+ {
+  "path": "detailed/zones/mableton/roads.js",
+  "size": 837632,
+  "sha256": "b6efd4ca1a0cfdc202619030a6bd3b011e9afffb010fe38510ca9c83e909d8b7",
+  "git_blob": "89965f9d91db7194c4a82f227987100640ef317a"
+ },
+ {
+  "path": "detailed/zones/mableton/roads.json",
+  "size": 837456,
+  "sha256": "a62704628647b465a6f8a3d0097ebfeb3ee9aed1ccb4639198c3193905833434",
+  "git_blob": "a83c8c2b002f11e54b06acd9c9395334ffd56c12"
+ },
+ {
+  "path": "detailed/zones/mableton/roads_detail.json",
+  "size": 151096,
+  "sha256": "401996d6fce2243df9405ea2cc7b4a40e51d5d5acf0ec503b7af705312301790",
+  "git_blob": "cf8c94c94de2230b6b172e7aa925b6efc5fc80d8"
+ },
+ {
+  "path": "detailed/zones/mableton/signs.js",
+  "size": 1090,
+  "sha256": "845b585cc152495dbbfe5bb103c943358316a16a4c9dcf55c525bbe98d83fd47",
+  "git_blob": "338196ffa3bc0cce4ac0139c4812ec9bb816920a"
+ },
+ {
+  "path": "detailed/zones/mableton/signs.json",
+  "size": 876,
+  "sha256": "4c93f922bc15d005ea39bc173f4fa353db9653d759fee2447e4346914b990903",
+  "git_blob": "c091a8b557f0b2182524dda74a5bf59dcdccc303"
+ },
+ {
+  "path": "detailed/zones/mableton/water.json",
+  "size": 26358,
+  "sha256": "2a2ff01ca857d1abf5edfdcf9d6007b96be3adcb89820465d3778f2c07bdfad2",
+  "git_blob": "90f7d84dae49f641d8d97fffcf09f839097b58ed"
+ },
+ {
+  "path": "detailed/zones/mableton/zone.json",
+  "size": 1209,
+  "sha256": "dcd3860333c8292de62b7440d89e9b603b96fd48b3d223310d5bb0c7b802bc3c",
+  "git_blob": "8bfd95cfb9cf5334b1c10a4dd8072f1e62eddb2d"
+ },
+ {
+  "path": "detailed/zones/riverdale/buildings.js",
+  "size": 1884351,
+  "sha256": "2ae3ef58aadfe045e48385d35f898dd7352abe01d8ed1012964bdeb876edd7f1",
+  "git_blob": "02600a5e395d280d73f7e54bdd7d8647f3626629"
+ },
+ {
+  "path": "detailed/zones/riverdale/buildings.json",
+  "size": 1884155,
+  "sha256": "fa0b113d0af005f9515d3a332f377fa4e3c25936bfa3b6633f81dcd6e2a72be4",
+  "git_blob": "6a209a4ffd6455aa6173116703d7fd8983831bc0"
+ },
+ {
+  "path": "detailed/zones/riverdale/buildings_detail.json",
+  "size": 10665033,
+  "sha256": "206ae73ec5a569bca399538a2e926212c6fdfc5207c2844800910dcf7aa9b1a9",
+  "git_blob": "904a0110aa7f47e3c00b5b1396d46d117ac86ce3"
+ },
+ {
+  "path": "detailed/zones/riverdale/lifts.js",
+  "size": 192,
+  "sha256": "1555de376d61f874175718655eb71c55e36a6a35b0fce7abc808ceb91bc1a1d8",
+  "git_blob": "2901665be84dc6ba14873e39794093e14b9e797d"
+ },
+ {
+  "path": "detailed/zones/riverdale/lifts.json",
+  "size": 2,
+  "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "git_blob": "0637a088a01e8ddab3bf3fa98dbe804cbde1a0dc"
+ },
+ {
+  "path": "detailed/zones/riverdale/pins.js",
+  "size": 537177,
+  "sha256": "47e1b31e4b4907169d588abf2a4ca2567f00bd984690b150c51c89a39a726751",
+  "git_blob": "abe2de9be557a65a7fbf993a1d283a13b7449554"
+ },
+ {
+  "path": "detailed/zones/riverdale/pins.json",
+  "size": 536987,
+  "sha256": "36410f01c635628a3226e515e0453392d014993da0abc4613a7db6b0dff16cf1",
+  "git_blob": "f8f7f49247cae606bd631e0d3e256ecc0b32b53f"
+ },
+ {
+  "path": "detailed/zones/riverdale/places.json",
+  "size": 50432,
+  "sha256": "1c5908d74db8bd9dcc3dbdf3f406e8cb44ac1fa4128e5b7d6579ec344098b1c3",
+  "git_blob": "492b992d522c0ee1911cf024320fe707f5ca2565"
+ },
+ {
+  "path": "detailed/zones/riverdale/roads.js",
+  "size": 5345093,
+  "sha256": "28e8e1304ad1350afb62e99725b59c40f1fb497e30731b462db3a82f66cc3713",
+  "git_blob": "9837f69cdb3b3e7d0fa398662602aa9fc95a9034"
+ },
+ {
+  "path": "detailed/zones/riverdale/roads.json",
+  "size": 5344915,
+  "sha256": "35d56aec84c9ce124be7ef72382d6af7a08470cfd879af20c07f8de70133df2b",
+  "git_blob": "23e50172b7312fba8d76e360b4d36fed97a328c2"
+ },
+ {
+  "path": "detailed/zones/riverdale/roads_detail.json",
+  "size": 1103227,
+  "sha256": "50073b00fb41aafe4c93b13b856fd78cb4512259130aba724677474dcc3e9322",
+  "git_blob": "7421cb81eb9413ae00208fdc325173493b241abf"
+ },
+ {
+  "path": "detailed/zones/riverdale/signs.js",
+  "size": 20488,
+  "sha256": "e59cd23d08c56c8f5133045f14732ede3b3dac186305237c181d12b45b24850f",
+  "git_blob": "b9526cc90d8cfbff6687daa8cac8ce44b0675366"
+ },
+ {
+  "path": "detailed/zones/riverdale/signs.json",
+  "size": 20272,
+  "sha256": "771b7a11d3ad2593ac414533b0f7317319b78c3f15aa8ddca605b37dd3fecee2",
+  "git_blob": "7806e4624dc3b6af4bab3686c3d4e7e16b4cf678"
+ },
+ {
+  "path": "detailed/zones/riverdale/water.json",
+  "size": 167215,
+  "sha256": "83e1d06cf586478786df0f1965ece9c238f068de2f8377de188a0a0c44746c5d",
+  "git_blob": "4c0381ea909ff6cf57e10dac59767af3cc09e2e9"
+ },
+ {
+  "path": "detailed/zones/riverdale/zone.json",
+  "size": 1220,
+  "sha256": "23f3bb3ee56b54a8824ed80fb99122650dda90ae6d0a3caac413d3bb02960f99",
+  "git_blob": "7deb048ceea35e2d92769b5e0416b951e5ce59de"
+ },
+ {
+  "path": "detailed/zones/southfulton/buildings.js",
+  "size": 1631296,
+  "sha256": "78aa1969b48c611bdfd3fc9e3477e68c29095ab6c92ff14e68a938190ccf1586",
+  "git_blob": "6ec8efcf5d85f866ac7e3b810a778f73b1a3ad09"
+ },
+ {
+  "path": "detailed/zones/southfulton/buildings.json",
+  "size": 1631095,
+  "sha256": "66a6310e364c9b38c731515406a24a7404ed1c195d4b28017142119c259fdec5",
+  "git_blob": "0380484f74fe365fb8af42acfe2ad82a0fd35005"
+ },
+ {
+  "path": "detailed/zones/southfulton/buildings_detail.json",
+  "size": 10899187,
+  "sha256": "cf3cba348ca60b0f530e7310e2bacf1086c9c1eeb213de21f037a4cd0b80a7b8",
+  "git_blob": "148dc6bfbb5b4b5b2abbe4ad676c7f4a40269d92"
+ },
+ {
+  "path": "detailed/zones/southfulton/lifts.js",
+  "size": 197,
+  "sha256": "dfc3e9ea56b3b46018b4e4a597331ee1ae1c838913d81211b664e38f67c51d33",
+  "git_blob": "58b823e5dd6367c4f347ed30159780bc15b3220b"
+ },
+ {
+  "path": "detailed/zones/southfulton/lifts.json",
+  "size": 2,
+  "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "git_blob": "0637a088a01e8ddab3bf3fa98dbe804cbde1a0dc"
+ },
+ {
+  "path": "detailed/zones/southfulton/pins.js",
+  "size": 440556,
+  "sha256": "29f7c45d79a19eaf11b460ec0d144cc460eaf5070b6b2bb329da51d88b909dbb",
+  "git_blob": "cd9d6084e0ae94ab15c9292d07eb9302c08d861e"
+ },
+ {
+  "path": "detailed/zones/southfulton/pins.json",
+  "size": 440361,
+  "sha256": "060ffb8dd5498f19cb78b7caa0684f7fe985c9eb5a7987e86d81b3ccaaa0ae25",
+  "git_blob": "f6c09af798d381741befb177c8b195877a3d3c85"
+ },
+ {
+  "path": "detailed/zones/southfulton/places.json",
+  "size": 27934,
+  "sha256": "6b6f69c49017daebc028d299b6958ad9c58dd735a6631c9864d8fe7b91032d44",
+  "git_blob": "519ef012403fc491876c78fb5712fe9f54f5c77a"
+ },
+ {
+  "path": "detailed/zones/southfulton/roads.js",
+  "size": 5855595,
+  "sha256": "c2042e736758d63437d0f2555538e06d3a2bdd665ba39770935c7994e1c37f6b",
+  "git_blob": "b1ff08941e970805fde6deb87f46df71ddc8bc55"
+ },
+ {
+  "path": "detailed/zones/southfulton/roads.json",
+  "size": 5855412,
+  "sha256": "800d443a5c509765cdccfd10930dade90433aecbe98a0a3afe0d356b328057b4",
+  "git_blob": "f1d1a3eb90454b68e37b4c71dd0c532de5406106"
+ },
+ {
+  "path": "detailed/zones/southfulton/roads_detail.json",
+  "size": 838859,
+  "sha256": "0308520b0164d7cf12ad2d4eada52eeecbc22fe8857aa80c619b2544ec64626f",
+  "git_blob": "fa00a40f4b73233fdd08604df7228e8c9be8e025"
+ },
+ {
+  "path": "detailed/zones/southfulton/signs.js",
+  "size": 10248,
+  "sha256": "b18f81617d06b298fa731be33ea8a0d41edc2fadf1b269771d08a6179c930440",
+  "git_blob": "df52160c2dcaad7ad88d65b6cf0350da43546805"
+ },
+ {
+  "path": "detailed/zones/southfulton/signs.json",
+  "size": 10027,
+  "sha256": "9065abf9976f5b7a4478992ddfd8cf4a462cc798ad0198ff7e8c2c9c116e16c2",
+  "git_blob": "2cafd2445e5fd37bf5cb3e328bc06c21ef9261eb"
+ },
+ {
+  "path": "detailed/zones/southfulton/water.json",
+  "size": 370453,
+  "sha256": "eab0fb197699cfed79b0a6276ba6020de27167bc13491ab908f034911f97032f",
+  "git_blob": "0c099a9ed557927c6311326eb444ce8ce59930e1"
+ },
+ {
+  "path": "detailed/zones/southfulton/zone.json",
+  "size": 1219,
+  "sha256": "65f2b9ca8775f43e24f5e1c2d0d332c0e94dc0c812d075ff3594daa549e86779",
+  "git_blob": "e4f8c26acc946a1aa8ca42af8f75052b7e66beb1"
+ },
+ {
+  "path": "detailed/zones/unioncity/buildings.js",
+  "size": 289225,
+  "sha256": "c252ed5e7a756c5417e45deb93e519fda56169d370b9ec188db93128c91784d3",
+  "git_blob": "3dbf5ccc88b17217502b23ae23053ac44280253d"
+ },
+ {
+  "path": "detailed/zones/unioncity/buildings.json",
+  "size": 289028,
+  "sha256": "a289d5a1f64739d7b768f75ba48896d72ce433e67fbe4a32895e7600477ff504",
+  "git_blob": "ee2379fc8176030e99c2fe15cc8958ed1bb2078a"
+ },
+ {
+  "path": "detailed/zones/unioncity/buildings_detail.json",
+  "size": 1850104,
+  "sha256": "48cf6067834b38dae23d2b0624fa1cb9a26c2548c761ede1477cd536bee79868",
+  "git_blob": "31645fc382b3e1d7e66ffc2452897e87cd16116d"
+ },
+ {
+  "path": "detailed/zones/unioncity/lifts.js",
+  "size": 193,
+  "sha256": "8148258cbe3bdcf166238f4de81524e3e6f7fe490ed9389682b68dcff3c3c230",
+  "git_blob": "0a8c606bde4905bc9089a2c7815993081544a124"
+ },
+ {
+  "path": "detailed/zones/unioncity/lifts.json",
+  "size": 2,
+  "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "git_blob": "0637a088a01e8ddab3bf3fa98dbe804cbde1a0dc"
+ },
+ {
+  "path": "detailed/zones/unioncity/pins.js",
+  "size": 39999,
+  "sha256": "2950ff7015d5287d97b64e086a8a65a11db348fd9300359375c9054348ac92aa",
+  "git_blob": "abbc61240f4ad4a3c4f6c6c4947eead3bc1cd2f0"
+ },
+ {
+  "path": "detailed/zones/unioncity/pins.json",
+  "size": 39808,
+  "sha256": "82dde5e75ca969b10a4224509369c40f55639b51af5bd60a2bfb05de7a43b4c8",
+  "git_blob": "b45f97197bc540b4f34b44dfe70ba260c9f1cae1"
+ },
+ {
+  "path": "detailed/zones/unioncity/places.json",
+  "size": 2097,
+  "sha256": "6b2bc9de87f8476c15426a1a33064b15328260fff9d8af1a48113257b82102ed",
+  "git_blob": "8634ae651977ee1da9866b303fb952712e53c6d0"
+ },
+ {
+  "path": "detailed/zones/unioncity/roads.js",
+  "size": 651701,
+  "sha256": "6276d76313a347a9c0738a9df34fc3aadda4bfba8f23e8a0c575557be269bcb9",
+  "git_blob": "89ac6f74ae3086b60c9eac0f44717dd77c49e7ea"
+ },
+ {
+  "path": "detailed/zones/unioncity/roads.json",
+  "size": 651522,
+  "sha256": "0f3bb7496da75d8bd5545953e954216a85389282e966beb9ff8fe7dd61b4e311",
+  "git_blob": "65231ca02b7b3dae4f76c44cb60efa7a4e664b7b"
+ },
+ {
+  "path": "detailed/zones/unioncity/roads_detail.json",
+  "size": 114273,
+  "sha256": "919987bc8d403760f2b909eb37079b062a0198fa5589b9392ce951906380ef0b",
+  "git_blob": "84085ff20cdaa5e0227774e21d69575cb92d77a2"
+ },
+ {
+  "path": "detailed/zones/unioncity/signs.js",
+  "size": 540,
+  "sha256": "1236e53b153f2d76c30081ed292491c0b41a2b255aa311e931ed0f1f6aaf2a35",
+  "git_blob": "55d1a41c7810997e751a11ba87a11915434568a3"
+ },
+ {
+  "path": "detailed/zones/unioncity/signs.json",
+  "size": 323,
+  "sha256": "e8d65b9be43788c0188217a3dac769255ecbf92b9e67e83e3da55c22b69fc9eb",
+  "git_blob": "6ecab9144dc3404d5211878e166c787bc01a83ea"
+ },
+ {
+  "path": "detailed/zones/unioncity/water.json",
+  "size": 80790,
+  "sha256": "3685f45c4354e1da6567e02199d8512177ca9a17462594651d48c937da0beb50",
+  "git_blob": "5bf51df74c9c697d2aedd5a15fa688c01c346bf4"
+ },
+ {
+  "path": "detailed/zones/unioncity/zone.json",
+  "size": 1210,
+  "sha256": "58b3db4effd007793d11c86990624acf4c2e0fc7d207700f85aad53cc764a764",
+  "git_blob": "a329f646e514df38f19d98f8c747ce7acaed0f3b"
+ },
+ {
+  "path": "detailed/zoneunlock.js",
+  "size": 27219,
+  "sha256": "7b6075e64d0c33b3e96dcdeb9b9951b22844acb9c233b9bbed3ebfdee522319d",
+  "git_blob": "fd775c04252483e578095fa8b8c95cd6a9b5a963"
+ },
+ {
+  "path": "detailed/zoneunlockflow.js",
+  "size": 31231,
+  "sha256": "74d2e3da9d5db086f3724cec9d5d42c2ba52e8561f2223fd467601d1ba8500b8",
+  "git_blob": "74ad90a5506003e1f3a42f0519986b984ac001bf"
+ }
+]
