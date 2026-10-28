@@ -1,0 +1,101 @@
+{
+ "snapshot": "crews-removed-2026-10-28",
+ "source_repo": "kingmarkarnold-code/adamsville-play",
+ "source_head_at_snapshot": "bbdcc561a56af1498660c337734f78dd044fcae5",
+ "note": "The old work crews (for the old map), removed on Joshua's order 2026-10-28 18:32 EDT, archived alongside the world map snapshot on the same branch. Includes pre-removal copies of the two live files whose crew wiring was edited out (index.html, helicopter_system.js). The general Player Reports pipeline (github_reports.js) was NOT removed; its CREW_KINDS report-kind table remains live by design.",
+ "file_count": 13,
+ "total_bytes": 1567824,
+ "files": [
+  {
+   "path": "roadcrew_system.js",
+   "size": 61159,
+   "sha256": "0d59bb481be630dabb021ff04bed303d7a4fa669f065fefa28ad0ae8607b21eb",
+   "git_blob_sha1": "70e19c6219a7f0b19e1c35b7b09c3d73a584f872",
+   "note": "crew system removed 2026-10-28"
+  },
+  {
+   "path": "surveyfleet_system.js",
+   "size": 61547,
+   "sha256": "b4266c71df1f70dbe6dde66bd481dae5f4b7c342e58a61097b7f5049846a9b79",
+   "git_blob_sha1": "0745fc445ed9d623f1b6ba1615a23daf6cde1624",
+   "note": "crew system removed 2026-10-28"
+  },
+  {
+   "path": "infracrew_system.js",
+   "size": 40670,
+   "sha256": "33387c716caa4288e707d9371e476aee454448fcccf91b20f9eee059fe6ae335",
+   "git_blob_sha1": "8abf0b330a5073d00fb276f1b8d5d795898a59b3",
+   "note": "crew system removed 2026-10-28"
+  },
+  {
+   "path": "hq_staff_system.js",
+   "size": 28119,
+   "sha256": "5e85954ba254a38e3230fcc92d4af497ff8bc65b4131bd3c41bf83153b3f525a",
+   "git_blob_sha1": "c9080a215632d01f42bb04cf0e4872046cff1bf0",
+   "note": "crew system removed 2026-10-28"
+  },
+  {
+   "path": "inspector_crew.js",
+   "size": 22944,
+   "sha256": "033b823d1694fc9f63729c43055944cbb2e899fa04746025c667c0695f5896bc",
+   "git_blob_sha1": "524fe79f530690e37fcef2671fd2fd5f655361f4",
+   "note": "crew system removed 2026-10-28"
+  },
+  {
+   "path": "veteran_crew.js",
+   "size": 30078,
+   "sha256": "b6dca75449c6d9f2198abbb78a16abfabcbe1b94d9b7e91c3f5341ab4b465203",
+   "git_blob_sha1": "e725a40efc1849d470cd018982f2730cc35bcf55",
+   "note": "crew system removed 2026-10-28"
+  },
+  {
+   "path": "cityworkforce.js",
+   "size": 29924,
+   "sha256": "9248dd15715cdcc88eee0ecd62d465750d66bd80f16752bc8c3efbc2bcd3f679",
+   "git_blob_sha1": "04faded2b4db48c3a546b7c0cb516413e7a4f3a3",
+   "note": "crew system removed 2026-10-28"
+  },
+  {
+   "path": "codeenforce_system.js",
+   "size": 68900,
+   "sha256": "c82144e0781f9ea1b4261660b98e3ffe48c219ae19f2f20b11752994a8c46852",
+   "git_blob_sha1": "fc8cff03104caafd3e9f7b8d3edbab3a254dc726",
+   "note": "crew system removed 2026-10-28"
+  },
+  {
+   "path": "crew_reports_view.js",
+   "size": 8307,
+   "sha256": "d168da879958c4751f32fbc2db8bca6d456104c59d0bc9d4693df9a6a3fe6e1b",
+   "git_blob_sha1": "796e28a23c927d3293b995bba59217ba21f04bde",
+   "note": "crew system removed 2026-10-28"
+  },
+  {
+   "path": "priority_dispatch.js",
+   "size": 15517,
+   "sha256": "18a29a053857306cb2fdcdb6d9bf172b047450e5d45da4dd1a9359efc86031bd",
+   "git_blob_sha1": "04cced061e16d57a492d5a160f19ec985ff3268a",
+   "note": "crew system removed 2026-10-28"
+  },
+  {
+   "path": "workerhousing.js",
+   "size": 38527,
+   "sha256": "2973cd389018f6500f1e22cf25b30d88b552868e5e6e2c02cc638c8e9d55b996",
+   "git_blob_sha1": "6822387eea9e44d6806579e12c8c73eaa6148919",
+   "note": "crew system removed 2026-10-28"
+  },
+  {
+   "path": "index.html.pre-crew-removal",
+   "size": 1126458,
+   "sha256": "7bdc6823071f7fcb154cfff3a506e51ec67c568662acb6b971c1b00d42a3dd0c",
+   "git_blob_sha1": "eb9595387f7b9da5ce5bc1acca7816f181873b23",
+   "note": "pre-removal copy; crew wiring was edited out of the live file"
+  },
+  {
+   "path": "helicopter_system.js.pre-crew-removal",
+   "size": 35674,
+   "sha256": "f24adfe67fab25e62f44ba05f93460997820c7c7d528334ed26ea7ccb0d8031c",
+   "git_blob_sha1": "4e8e0212833b7ebedc55d1d7e0627bbcdff03706",
+   "note": "pre-removal copy; crew wiring was edited out of the live file"
+  }
+ ]
+}
